@@ -2,7 +2,7 @@
 #include "core/CGame.h"
 #include "render/D3D11Render/D3D11Renderer.h"
 
-CGame::CGame() : m_hWnd(NULL), m_hInstance(NULL)
+CGame::CGame() : m_hWnd(NULL), m_hInstance(NULL), m_pRenderer(nullptr)
 {
 }
 
