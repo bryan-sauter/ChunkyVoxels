@@ -1,0 +1,30 @@
+#ifndef D3D11RENDERER_H_
+#define D3D11RENDERER_H_
+
+#include "stdafx.h"
+#include "render/Renderer.h"
+
+class D3D11Renderer : public Renderer
+{
+private:
+    ID3D11Device* m_pDevice;
+    ID3D11DeviceContext* m_pDeviceContext;
+    ID3D11RenderTargetView* m_pRenderTarget; //typically called the backbuffer
+    ID3D11VertexShader* m_pVS;
+    ID3D11PixelShader* m_pPS;
+    ID3D11Buffer* m_pVBuffer;
+    ID3D11InputLayout* m_pLayout;
+    IDXGISwapChain* m_pSwapChain;
+
+    const float m_clearColor[4] = { 0.0f, 0.2f, 0.4f, 1.0f };
+
+    void initializePipeline(void);
+
+public:
+    bool initialize(void);
+    void update(float dT);
+    void render(void);
+    bool shutdown(void);
+};
+
+#endif //D3D11RENDERER_H_

@@ -1,0 +1,137 @@
+#include "render/D3D11Render/D3D11Renderer.h"
+
+#include "helpers/HResultHelpers.h"
+#include "helpers/Globals.h"
+#include "core/CGame.h"
+#include "render/D3D11Render/D3D11Declares.h"
+
+bool D3D11Renderer::initialize(void)
+{
+    //declare the swap chain description struct
+    DXGI_SWAP_CHAIN_DESC swapChainDESC;
+    //make sure the struct is empty
+    ZeroMemory(&swapChainDESC, sizeof(DXGI_SWAP_CHAIN_DESC));
+    //set the values in the swap chain struct
+    swapChainDESC.BufferCount = 1;                                      // one back buffer
+    swapChainDESC.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;       // use 32-bit color
+    swapChainDESC.BufferDesc.Width = Globals::getInstance().getWindowWidth();
+    swapChainDESC.BufferDesc.Height = Globals::getInstance().getWindowHeight();
+    swapChainDESC.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;        // how swap chain is to be used
+    swapChainDESC.OutputWindow = CGame::getInstance().getHWND();        // the window to be used
+    swapChainDESC.SampleDesc.Count = 4;                                 // how many multisamples
+    swapChainDESC.Windowed = !Globals::getInstance().getFullScreen();   // windowed/full-screen mode
+    swapChainDESC.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;       // allow full-screen switching
+    // create a device, device context and swap chain using the information in the swapChainDESC struct
+    ThrowIfFailed(D3D11CreateDeviceAndSwapChain(NULL,
+        D3D_DRIVER_TYPE_HARDWARE,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        D3D11_SDK_VERSION,
+        &swapChainDESC,
+        &m_pSwapChain,
+        &m_pDevice,
+        NULL,
+        &m_pDeviceContext));
+    //get the backbuffer address
+    ID3D11Texture2D* pBackBuffer;
+    ThrowIfFailed(m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer));
+    //use back buffer to create render target
+    ThrowIfFailed(m_pDevice->CreateRenderTargetView(pBackBuffer, NULL, &m_pRenderTarget));
+    SAFE_RELEASE(pBackBuffer);
+    //set the render target as the back buffer
+    m_pDeviceContext->OMSetRenderTargets(1, &m_pRenderTarget, NULL);
+    //setup the viewport
+    D3D11_VIEWPORT viewPort;
+    //zero the struct
+    ZeroMemory(&viewPort, sizeof(D3D11_VIEWPORT));
+    //set values in struct
+    viewPort.TopLeftX = 0;
+    viewPort.TopLeftY = 0;
+    viewPort.Width = Globals::getInstance().getWindowWidth();
+    viewPort.Height = Globals::getInstance().getWindowHeight();
+    //set viewport
+    m_pDeviceContext->RSSetViewports(1, &viewPort);
+
+    initializePipeline();
+
+    return false;
+}
+
+void D3D11Renderer::initializePipeline(void)
+{
+    //load our basic shader
+    ID3D10Blob * VS, * PS;
+    ThrowIfFailed(D3DCompileFromFile(L"./resource/render/D3D11Renderer/triangle.shader", 0, 0, "VShader", "vs_4_0", 0, 0, &VS, 0));
+    ThrowIfFailed(D3DCompileFromFile(L"./resource/render/D3D11Renderer/triangle.shader", 0, 0, "PShader", "ps_4_0", 0, 0, &PS, 0));
+    //set into the shader objects
+    ThrowIfFailed(m_pDevice->CreateVertexShader(VS->GetBufferPointer(), VS->GetBufferSize(), NULL, &m_pVS));
+    ThrowIfFailed(m_pDevice->CreatePixelShader(PS->GetBufferPointer(), PS->GetBufferSize(), NULL, &m_pPS));
+    //set as current shaders
+    m_pDeviceContext->VSSetShader(m_pVS, 0, 0);
+    m_pDeviceContext->PSSetShader(m_pPS, 0, 0);
+
+    D3D11_BUFFER_DESC bd;
+    ZeroMemory(&bd, sizeof(bd));
+
+    bd.Usage = D3D11_USAGE_DYNAMIC;                // write access access by CPU and GPU
+    bd.ByteWidth = sizeof(VERTEX) * 3;             // size is the VERTEX struct * 3
+    bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;       // use as a vertex buffer
+    bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;    // allow CPU to write in buffer
+
+    ThrowIfFailed(m_pDevice->CreateBuffer(&bd, NULL, &m_pVBuffer));       // create the buffer
+
+        // copy the vertices into the buffer
+    D3D11_MAPPED_SUBRESOURCE ms;
+    ThrowIfFailed(m_pDeviceContext->Map(m_pVBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms));    // map the buffer
+    memcpy(ms.pData, SimpleTriangle, sizeof(SimpleTriangle));                 // copy the data
+    m_pDeviceContext->Unmap(m_pVBuffer, NULL);                                      // unmap the buffer
+
+        // create the input layout object
+    D3D11_INPUT_ELEMENT_DESC ied[] =
+    {
+        {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+        {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
+    };
+
+    ThrowIfFailed(m_pDevice->CreateInputLayout(ied, 2, VS->GetBufferPointer(), VS->GetBufferSize(), &m_pLayout));
+    m_pDeviceContext->IASetInputLayout(m_pLayout);
+}
+
+void D3D11Renderer::update(float dT)
+{
+}
+
+void D3D11Renderer::render(void)
+{
+    //clear the back buffer to a color
+    m_pDeviceContext->ClearRenderTargetView(m_pRenderTarget, m_clearColor);
+
+    // select which vertex buffer to display
+    UINT stride = sizeof(VERTEX);
+    UINT offset = 0;
+    m_pDeviceContext->IASetVertexBuffers(0, 1, &m_pVBuffer, &stride, &offset);
+
+    // select which primtive type we are using
+    m_pDeviceContext->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+    // draw the vertex buffer to the back buffer
+    m_pDeviceContext->Draw(3, 0);
+
+    m_pSwapChain->Present(0, 0);
+}
+
+bool D3D11Renderer::shutdown(void)
+{
+    //switch to windowed to shutdown
+    m_pSwapChain->SetFullscreenState(FALSE, NULL);
+
+    SAFE_RELEASE(m_pVS);
+    SAFE_RELEASE(m_pPS);
+    SAFE_RELEASE(m_pSwapChain);
+    SAFE_RELEASE(m_pRenderTarget);
+    SAFE_RELEASE(m_pDevice);
+    SAFE_RELEASE(m_pDeviceContext);
+    return false;
+}
