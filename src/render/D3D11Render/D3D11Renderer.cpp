@@ -56,7 +56,7 @@ bool D3D11Renderer::initialize(void)
 
     initializePipeline();
 
-    return false;
+    return true;
 }
 
 void D3D11Renderer::initializePipeline(void)
@@ -76,7 +76,7 @@ void D3D11Renderer::initializePipeline(void)
     ZeroMemory(&bd, sizeof(bd));
 
     bd.Usage = D3D11_USAGE_DYNAMIC;                // write access access by CPU and GPU
-    bd.ByteWidth = sizeof(VERTEX) * 3;             // size is the VERTEX struct * 3
+    bd.ByteWidth = sizeof(VERTEX) * (UINT)(*(&SimpleIndexedCube + 1)-SimpleIndexedCube);             // size is the VERTEX struct * 3
     bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;       // use as a vertex buffer
     bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;    // allow CPU to write in buffer
 
@@ -85,7 +85,7 @@ void D3D11Renderer::initializePipeline(void)
         // copy the vertices into the buffer
     D3D11_MAPPED_SUBRESOURCE ms;
     ThrowIfFailed(m_pDeviceContext->Map(m_pVBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms));    // map the buffer
-    memcpy(ms.pData, SimpleTriangle, sizeof(SimpleTriangle));                 // copy the data
+    memcpy(ms.pData, SimpleIndexedCube, sizeof(SimpleIndexedCube));                 // copy the data
     m_pDeviceContext->Unmap(m_pVBuffer, NULL);                                      // unmap the buffer
 
         // create the input layout object
@@ -97,6 +97,23 @@ void D3D11Renderer::initializePipeline(void)
 
     ThrowIfFailed(m_pDevice->CreateInputLayout(ied, 2, VS->GetBufferPointer(), VS->GetBufferSize(), &m_pLayout));
     m_pDeviceContext->IASetInputLayout(m_pLayout);
+
+    D3D11_BUFFER_DESC ibd;
+    ibd.Usage = D3D11_USAGE_DEFAULT;
+    ibd.ByteWidth = sizeof(unsigned int) * 36;
+    ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+    ibd.CPUAccessFlags = 0;
+    ibd.MiscFlags = 0;
+    //define the resource data
+    D3D11_SUBRESOURCE_DATA InitData;
+    InitData.pSysMem = buildCubeIndex();
+    InitData.SysMemPitch = 0;
+    InitData.SysMemSlicePitch = 0;
+    // Create the buffer with the device.
+    ThrowIfFailed(m_pDevice->CreateBuffer(&ibd, &InitData, &m_pIBuffer));
+
+    // Set the buffer.
+    m_pDeviceContext->IASetIndexBuffer(m_pIBuffer, DXGI_FORMAT_R32_UINT, 0);
 }
 
 void D3D11Renderer::update(float dT)
@@ -117,7 +134,7 @@ void D3D11Renderer::render(void)
     m_pDeviceContext->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
     // draw the vertex buffer to the back buffer
-    m_pDeviceContext->Draw(3, 0);
+    m_pDeviceContext->DrawIndexed(36, 0, 0);
 
     m_pSwapChain->Present(0, 0);
 }
@@ -133,5 +150,5 @@ bool D3D11Renderer::shutdown(void)
     SAFE_RELEASE(m_pRenderTarget);
     SAFE_RELEASE(m_pDevice);
     SAFE_RELEASE(m_pDeviceContext);
-    return false;
+    return true;
 }

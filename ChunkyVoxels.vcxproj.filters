@@ -40,6 +40,15 @@
     <Filter Include="Source Files\render\D3D11Render">
       <UniqueIdentifier>{2562f5a1-75b1-476e-ae05-b844b67ab449}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\render">
+      <UniqueIdentifier>{f2300354-537f-4b52-8608-6c6b5fd32a19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\render\D3D11Render">
+      <UniqueIdentifier>{10afb80a-4f8f-4b77-928f-ae65f1767f01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\render\D3D11Render\shaders">
+      <UniqueIdentifier>{0be6e240-93cf-4648-b170-04e9bca123a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\render\D3D11Render\BaseShader.h">
@@ -105,5 +114,10 @@
     <ClCompile Include="src\core\GameCore.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\render\D3D11Renderer\triangle.shader">
+      <Filter>Resource Files\render\D3D11Render\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

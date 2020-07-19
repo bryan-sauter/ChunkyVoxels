@@ -13,6 +13,7 @@ private:
     ID3D11VertexShader* m_pVS;
     ID3D11PixelShader* m_pPS;
     ID3D11Buffer* m_pVBuffer;
+    ID3D11Buffer* m_pIBuffer;
     ID3D11InputLayout* m_pLayout;
     IDXGISwapChain* m_pSwapChain;
 

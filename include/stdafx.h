@@ -14,8 +14,6 @@ using namespace Microsoft::WRL;
 
 #include <d3d11.h>
 #include <d3dcompiler.h>
-//#include <D3DX10.h>
-#include <DirectXMath.h>
 #include <DirectXColors.h>
 
 #pragma comment (lib, "d3d11.lib")
