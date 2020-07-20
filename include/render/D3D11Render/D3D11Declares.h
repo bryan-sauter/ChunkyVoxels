@@ -3,6 +3,8 @@
 
 #include "stdafx.h"
 
+
+
 struct VERTEX
 {
     float x, y, z;

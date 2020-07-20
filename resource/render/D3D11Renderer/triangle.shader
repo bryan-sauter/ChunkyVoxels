@@ -1,3 +1,7 @@
+cbuffer VS_CONSTANT_BUFFER {
+    float4x4 gWVP;
+};
+
 struct VOut
 {
     float4 position : SV_POSITION;
@@ -8,7 +12,7 @@ VOut VShader(float4 position : POSITION, float4 color : COLOR)
 {
     VOut output;
 
-    output.position = position;
+    output.position = mul(position, gWVP);
     output.color = color;
 
     return output;

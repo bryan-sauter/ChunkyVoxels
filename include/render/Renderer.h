@@ -1,7 +1,11 @@
 #ifndef RENDERER_H_
 #define RENDERER_H_
 
+#include "render/Camera.h"
+
 class Renderer {
+protected:
+    Camera m_Camera;
 
 public:
     virtual bool initialize(void) = 0;

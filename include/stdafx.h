@@ -3,6 +3,9 @@
 
 //#define _DEBUG
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "core/targetver.h"
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 // Windows Header Files
@@ -14,6 +17,7 @@ using namespace Microsoft::WRL;
 
 #include <d3d11.h>
 #include <d3dcompiler.h>
+#include <DirectXMath.h>
 #include <DirectXColors.h>
 
 #pragma comment (lib, "d3d11.lib")

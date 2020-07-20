@@ -54,6 +54,11 @@ bool D3D11Renderer::initialize(void)
     //set viewport
     m_pDeviceContext->RSSetViewports(1, &viewPort);
 
+    this->m_Camera.buildPerspective(glm::pi<float>() / 3.0f, 0.1f, 5000.0f);
+    this->m_Camera.setViewPosition(glm::vec3(0.0f, 0.0f, -10.0f));
+    glm::mat4 mvp = this->m_Camera.getProjectionMatrix() * this->m_Camera.getViewMatrix();
+    this->m_sConstantBuffer.mWorldViewProj = DirectX::XMFLOAT4X4(&mvp[0][0]);
+
     initializePipeline();
 
     return true;
@@ -62,15 +67,19 @@ bool D3D11Renderer::initialize(void)
 void D3D11Renderer::initializePipeline(void)
 {
     //load our basic shader
-    ID3D10Blob * VS, * PS;
-    ThrowIfFailed(D3DCompileFromFile(L"./resource/render/D3D11Renderer/triangle.shader", 0, 0, "VShader", "vs_4_0", 0, 0, &VS, 0));
-    ThrowIfFailed(D3DCompileFromFile(L"./resource/render/D3D11Renderer/triangle.shader", 0, 0, "PShader", "ps_4_0", 0, 0, &PS, 0));
+    ID3DBlob* VS, * PS, * errorBlob;
+    HRESULT hr = D3DCompileFromFile(L"./resource/render/D3D11Renderer/triangle.shader", 0, 0, "VShader", "vs_4_0", D3DCOMPILE_DEBUG| D3DCOMPILE_SKIP_OPTIMIZATION, 0, &VS, &errorBlob);
+    checkForShaderCompileError(hr, VS, errorBlob);
+    hr = D3DCompileFromFile(L"./resource/render/D3D11Renderer/triangle.shader", 0, 0, "PShader", "ps_4_0", D3DCOMPILE_DEBUG| D3DCOMPILE_SKIP_OPTIMIZATION, 0, &PS, &errorBlob);
+    checkForShaderCompileError(hr, PS, errorBlob);
     //set into the shader objects
     ThrowIfFailed(m_pDevice->CreateVertexShader(VS->GetBufferPointer(), VS->GetBufferSize(), NULL, &m_pVS));
     ThrowIfFailed(m_pDevice->CreatePixelShader(PS->GetBufferPointer(), PS->GetBufferSize(), NULL, &m_pPS));
     //set as current shaders
     m_pDeviceContext->VSSetShader(m_pVS, 0, 0);
     m_pDeviceContext->PSSetShader(m_pPS, 0, 0);
+
+    
 
     D3D11_BUFFER_DESC bd;
     ZeroMemory(&bd, sizeof(bd));
@@ -114,6 +123,37 @@ void D3D11Renderer::initializePipeline(void)
 
     // Set the buffer.
     m_pDeviceContext->IASetIndexBuffer(m_pIBuffer, DXGI_FORMAT_R32_UINT, 0);
+
+    D3D11_BUFFER_DESC cbd;
+    cbd.ByteWidth = sizeof(VS_CONSTANT_BUFFER);
+    cbd.Usage = D3D11_USAGE_DYNAMIC;
+    cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+    cbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+    cbd.MiscFlags = 0;
+    cbd.StructureByteStride = 0;
+
+    InitData.pSysMem = &this->m_sConstantBuffer;
+    InitData.SysMemPitch = 0;
+    InitData.SysMemSlicePitch = 0;
+
+    ThrowIfFailed(m_pDevice->CreateBuffer(&cbd, &InitData, &m_pCBuffer));
+    m_pDeviceContext->VSSetConstantBuffers(0, 1, &m_pCBuffer);
+}
+
+void D3D11Renderer::checkForShaderCompileError(HRESULT hr, ID3DBlob* shaderBlob, ID3DBlob* errorBlob)
+{
+    if (FAILED(hr))
+    {
+        if (errorBlob)
+        {
+            OutputDebugStringA((char*)errorBlob->GetBufferPointer());
+            errorBlob->Release();
+        }
+
+        if (shaderBlob)
+            shaderBlob->Release();
+    }
+    ThrowIfFailed(hr);
 }
 
 void D3D11Renderer::update(float dT)

@@ -14,12 +14,18 @@ private:
     ID3D11PixelShader* m_pPS;
     ID3D11Buffer* m_pVBuffer;
     ID3D11Buffer* m_pIBuffer;
+    ID3D11Buffer* m_pCBuffer;
     ID3D11InputLayout* m_pLayout;
     IDXGISwapChain* m_pSwapChain;
+    struct VS_CONSTANT_BUFFER {
+        DirectX::XMFLOAT4X4 mWorldViewProj;
+    }m_sConstantBuffer;
 
     const float m_clearColor[4] = { 0.0f, 0.2f, 0.4f, 1.0f };
 
     void initializePipeline(void);
+
+    void checkForShaderCompileError(HRESULT hr, ID3DBlob* shaderBlob, ID3DBlob* errorBlob);
 
 public:
     bool initialize(void);
