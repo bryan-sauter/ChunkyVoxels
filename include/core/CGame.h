@@ -24,7 +24,7 @@ public:
     void operator=(CGame const&) = delete;
 
     void initialize(HWND hWnd, HINSTANCE hInstance);
-    void tick(void);
+    void tick(float fDt);
     void shutdown(void);
 
 

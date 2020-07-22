@@ -7,6 +7,7 @@
 
 bool D3D11Renderer::initialize(void)
 {
+    m_pCamera = new D3D11Camera();
     //declare the swap chain description struct
     DXGI_SWAP_CHAIN_DESC swapChainDESC;
     //make sure the struct is empty
@@ -54,10 +55,11 @@ bool D3D11Renderer::initialize(void)
     //set viewport
     m_pDeviceContext->RSSetViewports(1, &viewPort);
 
-    this->m_Camera.buildPerspective(glm::pi<float>() / 3.0f, 0.1f, 5000.0f);
-    this->m_Camera.setViewPosition(glm::vec3(0.0f, 0.0f, -10.0f));
-    glm::mat4 mvp = this->m_Camera.getProjectionMatrix() * this->m_Camera.getViewMatrix();
-    this->m_sConstantBuffer.mWorldViewProj = DirectX::XMFLOAT4X4(&mvp[0][0]);
+    this->m_pCamera->buildPerspective(glm::pi<float>()/4.0f, 0.1f, 5000.0f);
+    this->m_pCamera->setViewPosition(10.0f, 0.0f, -50.0f);
+    DirectX::XMStoreFloat4x4(&this->m_sConstantBuffer.mWorldViewProj,
+        /*DirectX::XMMatrixIdentity() * */m_pCamera->getViewMatrix() * m_pCamera->getProjectionMatrix());
+    XMStoreFloat4x4(&this->m_sConstantBuffer.mWorldViewProj,XMMatrixTranspose(XMLoadFloat4x4(&m_sConstantBuffer.mWorldViewProj)));
 
     initializePipeline();
 
@@ -162,6 +164,14 @@ void D3D11Renderer::update(float dT)
 
 void D3D11Renderer::render(void)
 {
+    D3D11_MAPPED_SUBRESOURCE mappedResource;
+    ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
+    DirectX::XMStoreFloat4x4(&this->m_sConstantBuffer.mWorldViewProj,
+        /*DirectX::XMMatrixIdentity() **/ m_pCamera->getViewMatrix() * m_pCamera->getProjectionMatrix());
+    XMStoreFloat4x4(&this->m_sConstantBuffer.mWorldViewProj, XMMatrixTranspose(XMLoadFloat4x4(&m_sConstantBuffer.mWorldViewProj)));
+    ThrowIfFailed(m_pDeviceContext->Map(m_pCBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+    memcpy(mappedResource.pData, &m_sConstantBuffer, sizeof(m_sConstantBuffer));
+    m_pDeviceContext->Unmap(m_pCBuffer, 0);
     //clear the back buffer to a color
     m_pDeviceContext->ClearRenderTargetView(m_pRenderTarget, m_clearColor);
 
@@ -169,6 +179,7 @@ void D3D11Renderer::render(void)
     UINT stride = sizeof(VERTEX);
     UINT offset = 0;
     m_pDeviceContext->IASetVertexBuffers(0, 1, &m_pVBuffer, &stride, &offset);
+    m_pDeviceContext->IASetIndexBuffer(m_pIBuffer, DXGI_FORMAT_R32_UINT, 0);
 
     // select which primtive type we are using
     m_pDeviceContext->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -190,5 +201,7 @@ bool D3D11Renderer::shutdown(void)
     SAFE_RELEASE(m_pRenderTarget);
     SAFE_RELEASE(m_pDevice);
     SAFE_RELEASE(m_pDeviceContext);
+
+    delete m_pCamera;
     return true;
 }

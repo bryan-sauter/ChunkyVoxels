@@ -129,3 +129,51 @@ void Camera::setViewPosition(float fX, float fY, float fZ)
     m_mViewMatrix[3][1] = fY;
     m_mViewMatrix[3][2] = fZ;
 }
+
+void Camera::viewRotateLocalX(float fAngle)
+{
+}
+
+void Camera::viewRotateLocalY(float fAngle)
+{
+}
+
+void Camera::viewRotateLocalZ(float fAngle)
+{
+}
+
+void Camera::viewTranslateLocal(glm::vec3 vAxis, bool bFPS)
+{
+    if (bFPS)
+    {
+        viewTranslateLocalX(vAxis.x, bFPS);
+        viewTranslateLocalY(vAxis.y, bFPS);
+        viewTranslateLocalZ(vAxis.z, bFPS);
+        return;
+    }
+
+    viewTranslateLocalX(vAxis.x);
+    viewTranslateLocalY(vAxis.y);
+    viewTranslateLocalZ(vAxis.z);
+}
+
+void Camera::viewTranslateLocalX(float fScale, bool bFPS)
+{
+    m_mViewMatrix[3].x += (m_mViewMatrix[0].x * fScale);
+    m_mViewMatrix[3].y += (m_mViewMatrix[0].y * fScale);
+    m_mViewMatrix[3].z += (m_mViewMatrix[0].z * fScale);
+}
+
+void Camera::viewTranslateLocalY(float fScale, bool bFPS)
+{
+    m_mViewMatrix[3].x += (m_mViewMatrix[1].x * fScale);
+    m_mViewMatrix[3].y += (m_mViewMatrix[1].y * fScale);
+    m_mViewMatrix[3].z += (m_mViewMatrix[1].z * fScale);
+}
+
+void Camera::viewTranslateLocalZ(float fScale, bool bFPS)
+{
+    m_mViewMatrix[3].x += (m_mViewMatrix[2].x * fScale);
+    m_mViewMatrix[3].y += (m_mViewMatrix[2].y * fScale);
+    m_mViewMatrix[3].z += (m_mViewMatrix[2].z * fScale);
+}

@@ -90,6 +90,12 @@
     <ClInclude Include="include\stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\helpers\Timer.h">
+      <Filter>Header Files\helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\D3D11Render\D3D11Camera.h">
+      <Filter>Header Files\render\D3D11Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resource\core\GameCore.ico">
@@ -119,6 +125,12 @@
     </ClCompile>
     <ClCompile Include="src\render\Camera.cpp">
       <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\helpers\Timer.cpp">
+      <Filter>Source Files\helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\D3D11Render\D3D11Camera.cpp">
+      <Filter>Source Files\render\D3D11Render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

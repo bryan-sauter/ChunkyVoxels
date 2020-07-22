@@ -15,14 +15,14 @@ D3DXCOLOR green{ 0.0f, 1.0f, 0.0f, 1.0f };
 D3DXCOLOR blue{ 0.0f, 0.0f, 1.0f, 1.0f };
 VERTEX SimpleIndexedCube[] =
 {
-    {-0.5f, -0.5f, 0.5f, red},
-    {-0.5f, 0.5f, 0.5f, green},
-    {0.5f, 0.5f, 0.5f, blue},
-    {0.5f, -0.5f, 0.5f, red},
-    {-0.5f, -0.5f, 1.0f, green },
-    {-0.5f, 0.5f, 1.0f, blue},
-    {0.5f, 0.5f, 1.0f, red},
-    {0.5f, -0.5f, 1.0f, green }
+    {-0.5f, -0.5f, -0.5f, red},
+    {-0.5f, 0.5f, -0.5f, green},
+    {0.5f, 0.5f, -0.5f, blue},
+    {0.5f, -0.5f, -0.5f, red},
+    {-0.5f, -0.5f, 0.5f, green },
+    {-0.5f, 0.5f, 0.5f, blue},
+    {0.5f, 0.5f, 0.5f, red},
+    {0.5f, -0.5f, 0.5f, green }
 };
 
 unsigned int* buildCubeIndex(unsigned int i = 0)

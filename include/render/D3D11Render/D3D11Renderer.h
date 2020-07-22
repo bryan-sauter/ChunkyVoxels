@@ -7,6 +7,7 @@
 class D3D11Renderer : public Renderer
 {
 private:
+    D3D11Camera* m_pCamera;
     ID3D11Device* m_pDevice;
     ID3D11DeviceContext* m_pDeviceContext;
     ID3D11RenderTargetView* m_pRenderTarget; //typically called the backbuffer
@@ -32,6 +33,7 @@ public:
     void update(float dT);
     void render(void);
     bool shutdown(void);
+    inline D3D11Camera* getCamera(void) { return m_pCamera; }
 };
 
 #endif //D3D11RENDERER_H_

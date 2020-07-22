@@ -158,8 +158,10 @@
     <ClInclude Include="include\core\resource.h" />
     <ClInclude Include="include\helpers\Globals.h" />
     <ClInclude Include="include\helpers\HResultHelpers.h" />
+    <ClInclude Include="include\helpers\Timer.h" />
     <ClInclude Include="include\render\Camera.h" />
     <ClInclude Include="include\render\D3D11Render\BaseShader.h" />
+    <ClInclude Include="include\render\D3D11Render\D3D11Camera.h" />
     <ClInclude Include="include\render\D3D11Render\D3D11Declares.h" />
     <ClInclude Include="include\render\D3D11Render\D3D11Renderer.h" />
     <ClInclude Include="include\render\Renderer.h" />
@@ -175,8 +177,10 @@
   <ItemGroup>
     <ClCompile Include="src\core\CGame.cpp" />
     <ClCompile Include="src\core\GameCore.cpp" />
+    <ClCompile Include="src\helpers\Timer.cpp" />
     <ClCompile Include="src\render\Camera.cpp" />
     <ClCompile Include="src\render\D3D11Render\BaseShader.cpp" />
+    <ClCompile Include="src\render\D3D11Render\D3D11Camera.cpp" />
     <ClCompile Include="src\render\D3D11Render\D3D11Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
