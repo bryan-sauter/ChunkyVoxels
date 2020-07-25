@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\core">
+      <UniqueIdentifier>{af2b8e72-673c-4c6e-80bd-78aa67d9887c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\helpers">
+      <UniqueIdentifier>{aa46fccf-86a9-4c9f-8f82-3d2dd19bef61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\render">
+      <UniqueIdentifier>{adc2806c-bf13-4a6c-a4d7-ce0221258bb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\render\D3D11Render">
+      <UniqueIdentifier>{1aa9c47f-bd1d-439c-ac4e-cbdc4e3f0e75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\core">
+      <UniqueIdentifier>{7087c1ff-645d-497f-a018-7665a1fd465e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core">
+      <UniqueIdentifier>{7fc31866-7f0b-49da-abc8-fc6137d40e3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\helpers">
+      <UniqueIdentifier>{68ff2950-65b2-4a72-8521-89e0bd270dca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\render">
+      <UniqueIdentifier>{73a6af68-a123-4a9c-8b74-6bb54297101b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\render\D3D11Render">
+      <UniqueIdentifier>{2562f5a1-75b1-476e-ae05-b844b67ab449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\render">
+      <UniqueIdentifier>{f2300354-537f-4b52-8608-6c6b5fd32a19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\render\D3D11Render">
+      <UniqueIdentifier>{10afb80a-4f8f-4b77-928f-ae65f1767f01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\render\D3D11Render\shaders">
+      <UniqueIdentifier>{0be6e240-93cf-4648-b170-04e9bca123a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\render\D3D11Render\Shaders">
+      <UniqueIdentifier>{7ea9d629-bd75-44d4-a3a7-dbf21bd8809c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\render\D3D11Render\Shaders">
+      <UniqueIdentifier>{c93333cb-2039-4a41-9a00-0adf46ebad77}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\render\D3D11Render\BaseShader.h">
+      <Filter>Header Files\render\D3D11Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\D3D11Render\D3D11Declares.h">
+      <Filter>Header Files\render\D3D11Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\D3D11Render\D3D11Renderer.h">
+      <Filter>Header Files\render\D3D11Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\Renderer.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\helpers\Globals.h">
+      <Filter>Header Files\helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core\CGame.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core\Config.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core\GameCore.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core\HResultHelpers.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core\resource.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\helpers\HResultHelpers.h">
+      <Filter>Header Files\helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\Camera.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\helpers\Timer.h">
+      <Filter>Header Files\helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\D3D11Render\D3D11Camera.h">
+      <Filter>Header Files\render\D3D11Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\D3D11Render\BasicColorShader.h">
+      <Filter>Header Files\render\D3D11Render\Shaders</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resource\core\GameCore.ico">
+      <Filter>Resource Files\core</Filter>
+    </Image>
+    <Image Include="resource\core\small.ico">
+      <Filter>Resource Files\core</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource\core\GameCore.rc">
+      <Filter>Resource Files\core</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\render\D3D11Render\BaseShader.cpp">
+      <Filter>Source Files\render\D3D11Render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\D3D11Render\D3D11Renderer.cpp">
+      <Filter>Source Files\render\D3D11Render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\CGame.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\GameCore.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\Camera.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\helpers\Timer.cpp">
+      <Filter>Source Files\helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\D3D11Render\D3D11Camera.cpp">
+      <Filter>Source Files\render\D3D11Render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\D3D11Render\BasicColorShader.cpp">
+      <Filter>Source Files\render\D3D11Render\Shaders</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\render\D3D11Renderer\triangle.shader">
+      <Filter>Resource Files\render\D3D11Render\shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>

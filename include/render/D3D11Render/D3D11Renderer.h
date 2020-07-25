@@ -1,0 +1,34 @@
+#ifndef D3D11RENDERER_H_
+#define D3D11RENDERER_H_
+
+#include "stdafx.h"
+#include "render/Renderer.h"
+#include "render/D3D11Render/BaseShader.h"
+
+class D3D11Renderer : public Renderer
+{
+private:
+    //this is not at the right level currently, the gamestate should own this. Once it is created.
+    //also a strat needs to be formulated for if we are using DRXMath or glm; glm works too currently
+    D3D11Camera* m_pCamera;
+    ID3D11Device* m_pDevice;
+    ID3D11DeviceContext* m_pDeviceContext;
+    ID3D11RenderTargetView* m_pRenderTarget; //typically called the backbuffer
+    ID3D11Buffer* m_pVBuffer;//will be part of render nodes or mesh manager
+    ID3D11Buffer* m_pIBuffer;//will be part of render nodes or mesh manager
+    IDXGISwapChain* m_pSwapChain;
+
+    BaseShader* m_pShader;
+
+    const float m_clearColor[4] = { 0.0f, 0.2f, 0.4f, 1.0f };
+
+    void initializePipeline(void);
+public:
+    bool initialize(void);
+    void update(float dT);
+    void render(void);
+    bool shutdown(void);
+    inline D3D11Camera* getCamera(void) { return m_pCamera; }
+};
+
+#endif //D3D11RENDERER_H_
