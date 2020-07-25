@@ -44,6 +44,7 @@ void CGame::tick(float fDt)
     if (GetAsyncKeyState(VK_ESCAPE))
         PostQuitMessage(0);
     if (m_pRenderer) {
+        m_pRenderer->update(fDt);
         m_pRenderer->render();
     }
 }

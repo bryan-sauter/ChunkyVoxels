@@ -5,6 +5,8 @@
 #include "core/CGame.h"
 #include "render/D3D11Render/D3D11Declares.h"
 
+#include "render/D3D11Render/BasicColorShader.h"
+
 bool D3D11Renderer::initialize(void)
 {
     m_pCamera = new D3D11Camera();
@@ -57,9 +59,11 @@ bool D3D11Renderer::initialize(void)
 
     this->m_pCamera->buildPerspective(glm::pi<float>()/4.0f, 0.1f, 5000.0f);
     this->m_pCamera->setViewPosition(10.0f, 0.0f, -50.0f);
-    DirectX::XMStoreFloat4x4(&this->m_sConstantBuffer.mWorldViewProj,
-        /*DirectX::XMMatrixIdentity() * */m_pCamera->getViewMatrix() * m_pCamera->getProjectionMatrix());
-    XMStoreFloat4x4(&this->m_sConstantBuffer.mWorldViewProj,XMMatrixTranspose(XMLoadFloat4x4(&m_sConstantBuffer.mWorldViewProj)));
+
+    m_pShader = new BasicColorShader();
+    m_pShader->initialize(m_pDevice, m_pDeviceContext,
+                                    L"./resource/render/D3D11Renderer/triangle.shader",
+                                    L"./resource/render/D3D11Renderer/triangle.shader");
 
     initializePipeline();
 
@@ -68,21 +72,6 @@ bool D3D11Renderer::initialize(void)
 
 void D3D11Renderer::initializePipeline(void)
 {
-    //load our basic shader
-    ID3DBlob* VS, * PS, * errorBlob;
-    HRESULT hr = D3DCompileFromFile(L"./resource/render/D3D11Renderer/triangle.shader", 0, 0, "VShader", "vs_4_0", D3DCOMPILE_DEBUG| D3DCOMPILE_SKIP_OPTIMIZATION, 0, &VS, &errorBlob);
-    checkForShaderCompileError(hr, VS, errorBlob);
-    hr = D3DCompileFromFile(L"./resource/render/D3D11Renderer/triangle.shader", 0, 0, "PShader", "ps_4_0", D3DCOMPILE_DEBUG| D3DCOMPILE_SKIP_OPTIMIZATION, 0, &PS, &errorBlob);
-    checkForShaderCompileError(hr, PS, errorBlob);
-    //set into the shader objects
-    ThrowIfFailed(m_pDevice->CreateVertexShader(VS->GetBufferPointer(), VS->GetBufferSize(), NULL, &m_pVS));
-    ThrowIfFailed(m_pDevice->CreatePixelShader(PS->GetBufferPointer(), PS->GetBufferSize(), NULL, &m_pPS));
-    //set as current shaders
-    m_pDeviceContext->VSSetShader(m_pVS, 0, 0);
-    m_pDeviceContext->PSSetShader(m_pPS, 0, 0);
-
-    
-
     D3D11_BUFFER_DESC bd;
     ZeroMemory(&bd, sizeof(bd));
 
@@ -93,21 +82,11 @@ void D3D11Renderer::initializePipeline(void)
 
     ThrowIfFailed(m_pDevice->CreateBuffer(&bd, NULL, &m_pVBuffer));       // create the buffer
 
-        // copy the vertices into the buffer
+    // copy the vertices into the buffer
     D3D11_MAPPED_SUBRESOURCE ms;
     ThrowIfFailed(m_pDeviceContext->Map(m_pVBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms));    // map the buffer
     memcpy(ms.pData, SimpleIndexedCube, sizeof(SimpleIndexedCube));                 // copy the data
     m_pDeviceContext->Unmap(m_pVBuffer, NULL);                                      // unmap the buffer
-
-        // create the input layout object
-    D3D11_INPUT_ELEMENT_DESC ied[] =
-    {
-        {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-        {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
-    };
-
-    ThrowIfFailed(m_pDevice->CreateInputLayout(ied, 2, VS->GetBufferPointer(), VS->GetBufferSize(), &m_pLayout));
-    m_pDeviceContext->IASetInputLayout(m_pLayout);
 
     D3D11_BUFFER_DESC ibd;
     ibd.Usage = D3D11_USAGE_DEFAULT;
@@ -122,56 +101,17 @@ void D3D11Renderer::initializePipeline(void)
     InitData.SysMemSlicePitch = 0;
     // Create the buffer with the device.
     ThrowIfFailed(m_pDevice->CreateBuffer(&ibd, &InitData, &m_pIBuffer));
-
     // Set the buffer.
     m_pDeviceContext->IASetIndexBuffer(m_pIBuffer, DXGI_FORMAT_R32_UINT, 0);
-
-    D3D11_BUFFER_DESC cbd;
-    cbd.ByteWidth = sizeof(VS_CONSTANT_BUFFER);
-    cbd.Usage = D3D11_USAGE_DYNAMIC;
-    cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-    cbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-    cbd.MiscFlags = 0;
-    cbd.StructureByteStride = 0;
-
-    InitData.pSysMem = &this->m_sConstantBuffer;
-    InitData.SysMemPitch = 0;
-    InitData.SysMemSlicePitch = 0;
-
-    ThrowIfFailed(m_pDevice->CreateBuffer(&cbd, &InitData, &m_pCBuffer));
-    m_pDeviceContext->VSSetConstantBuffers(0, 1, &m_pCBuffer);
-}
-
-void D3D11Renderer::checkForShaderCompileError(HRESULT hr, ID3DBlob* shaderBlob, ID3DBlob* errorBlob)
-{
-    if (FAILED(hr))
-    {
-        if (errorBlob)
-        {
-            OutputDebugStringA((char*)errorBlob->GetBufferPointer());
-            errorBlob->Release();
-        }
-
-        if (shaderBlob)
-            shaderBlob->Release();
-    }
-    ThrowIfFailed(hr);
 }
 
 void D3D11Renderer::update(float dT)
 {
+    m_pShader->updateShader(m_pDeviceContext, XMMatrixTranspose(m_pCamera->getViewMatrix() * m_pCamera->getProjectionMatrix()));
 }
 
 void D3D11Renderer::render(void)
 {
-    D3D11_MAPPED_SUBRESOURCE mappedResource;
-    ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
-    DirectX::XMStoreFloat4x4(&this->m_sConstantBuffer.mWorldViewProj,
-        /*DirectX::XMMatrixIdentity() **/ m_pCamera->getViewMatrix() * m_pCamera->getProjectionMatrix());
-    XMStoreFloat4x4(&this->m_sConstantBuffer.mWorldViewProj, XMMatrixTranspose(XMLoadFloat4x4(&m_sConstantBuffer.mWorldViewProj)));
-    ThrowIfFailed(m_pDeviceContext->Map(m_pCBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
-    memcpy(mappedResource.pData, &m_sConstantBuffer, sizeof(m_sConstantBuffer));
-    m_pDeviceContext->Unmap(m_pCBuffer, 0);
     //clear the back buffer to a color
     m_pDeviceContext->ClearRenderTargetView(m_pRenderTarget, m_clearColor);
 
@@ -195,13 +135,12 @@ bool D3D11Renderer::shutdown(void)
     //switch to windowed to shutdown
     m_pSwapChain->SetFullscreenState(FALSE, NULL);
 
-    SAFE_RELEASE(m_pVS);
-    SAFE_RELEASE(m_pPS);
     SAFE_RELEASE(m_pSwapChain);
     SAFE_RELEASE(m_pRenderTarget);
     SAFE_RELEASE(m_pDevice);
     SAFE_RELEASE(m_pDeviceContext);
 
-    delete m_pCamera;
+    SAFE_DELETE(m_pCamera);
+    SAFE_DELETE(m_pShader);
     return true;
 }

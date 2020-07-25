@@ -120,6 +120,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <Profile>true</Profile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -148,6 +149,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <Profile>true</Profile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -161,6 +163,7 @@
     <ClInclude Include="include\helpers\Timer.h" />
     <ClInclude Include="include\render\Camera.h" />
     <ClInclude Include="include\render\D3D11Render\BaseShader.h" />
+    <ClInclude Include="include\render\D3D11Render\BasicColorShader.h" />
     <ClInclude Include="include\render\D3D11Render\D3D11Camera.h" />
     <ClInclude Include="include\render\D3D11Render\D3D11Declares.h" />
     <ClInclude Include="include\render\D3D11Render\D3D11Renderer.h" />
@@ -180,6 +183,7 @@
     <ClCompile Include="src\helpers\Timer.cpp" />
     <ClCompile Include="src\render\Camera.cpp" />
     <ClCompile Include="src\render\D3D11Render\BaseShader.cpp" />
+    <ClCompile Include="src\render\D3D11Render\BasicColorShader.cpp" />
     <ClCompile Include="src\render\D3D11Render\D3D11Camera.cpp" />
     <ClCompile Include="src\render\D3D11Render\D3D11Renderer.cpp" />
   </ItemGroup>

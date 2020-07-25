@@ -3,31 +3,26 @@
 
 #include "stdafx.h"
 #include "render/Renderer.h"
+#include "render/D3D11Render/BaseShader.h"
 
 class D3D11Renderer : public Renderer
 {
 private:
+    //this is not at the right level currently, the gamestate should own this. Once it is created.
+    //also a strat needs to be formulated for if we are using DRXMath or glm; glm works too currently
     D3D11Camera* m_pCamera;
     ID3D11Device* m_pDevice;
     ID3D11DeviceContext* m_pDeviceContext;
     ID3D11RenderTargetView* m_pRenderTarget; //typically called the backbuffer
-    ID3D11VertexShader* m_pVS;
-    ID3D11PixelShader* m_pPS;
-    ID3D11Buffer* m_pVBuffer;
-    ID3D11Buffer* m_pIBuffer;
-    ID3D11Buffer* m_pCBuffer;
-    ID3D11InputLayout* m_pLayout;
+    ID3D11Buffer* m_pVBuffer;//will be part of render nodes or mesh manager
+    ID3D11Buffer* m_pIBuffer;//will be part of render nodes or mesh manager
     IDXGISwapChain* m_pSwapChain;
-    struct VS_CONSTANT_BUFFER {
-        DirectX::XMFLOAT4X4 mWorldViewProj;
-    }m_sConstantBuffer;
+
+    BaseShader* m_pShader;
 
     const float m_clearColor[4] = { 0.0f, 0.2f, 0.4f, 1.0f };
 
     void initializePipeline(void);
-
-    void checkForShaderCompileError(HRESULT hr, ID3DBlob* shaderBlob, ID3DBlob* errorBlob);
-
 public:
     bool initialize(void);
     void update(float dT);

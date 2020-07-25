@@ -49,6 +49,12 @@
     <Filter Include="Resource Files\render\D3D11Render\shaders">
       <UniqueIdentifier>{0be6e240-93cf-4648-b170-04e9bca123a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\render\D3D11Render\Shaders">
+      <UniqueIdentifier>{7ea9d629-bd75-44d4-a3a7-dbf21bd8809c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\render\D3D11Render\Shaders">
+      <UniqueIdentifier>{c93333cb-2039-4a41-9a00-0adf46ebad77}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\render\D3D11Render\BaseShader.h">
@@ -96,6 +102,9 @@
     <ClInclude Include="include\render\D3D11Render\D3D11Camera.h">
       <Filter>Header Files\render\D3D11Render</Filter>
     </ClInclude>
+    <ClInclude Include="include\render\D3D11Render\BasicColorShader.h">
+      <Filter>Header Files\render\D3D11Render\Shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resource\core\GameCore.ico">
@@ -131,6 +140,9 @@
     </ClCompile>
     <ClCompile Include="src\render\D3D11Render\D3D11Camera.cpp">
       <Filter>Source Files\render\D3D11Render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\D3D11Render\BasicColorShader.cpp">
+      <Filter>Source Files\render\D3D11Render\Shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
