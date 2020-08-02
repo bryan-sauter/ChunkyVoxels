@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "render/Renderer.h"
+#include "render/Camera.h"
 #include "render/D3D11Render/BaseShader.h"
 
 class D3D11Renderer : public Renderer
@@ -14,6 +15,7 @@ private:
     ID3D11Device* m_pDevice;
     ID3D11DeviceContext* m_pDeviceContext;
     ID3D11RenderTargetView* m_pRenderTarget; //typically called the backbuffer
+    ID3D11DepthStencilView* m_pDepthBuffer;
     ID3D11Buffer* m_pVBuffer;//will be part of render nodes or mesh manager
     ID3D11Buffer* m_pIBuffer;//will be part of render nodes or mesh manager
     IDXGISwapChain* m_pSwapChain;
@@ -29,6 +31,7 @@ public:
     void render(void);
     bool shutdown(void);
     inline D3D11Camera* getCamera(void) { return m_pCamera; }
+    //inline Camera* getCamera(void) { return m_pCamera; }
 };
 
 #endif //D3D11RENDERER_H_

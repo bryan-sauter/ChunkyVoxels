@@ -39,4 +39,6 @@ typedef struct D3DXCOLOR {
     float r; float g; float b; float a;
 } D3DXCOLOR;
 
+#define FORWARD_SPEED 7.0f
+
 #endif //STDAFX_H_

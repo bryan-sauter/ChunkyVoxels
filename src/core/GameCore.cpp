@@ -1,11 +1,13 @@
 // GameCore.cpp : Defines the entry point for the application.
 //
-
 #include "stdafx.h"
 #include "core/GameCore.h"
 #include "core/CGame.h"
 #include "helpers/Globals.h"
 #include "helpers/Timer.h"
+
+#include <io.h>
+#include <fcntl.h>
 
 #define MAX_LOADSTRING 100
 
@@ -20,6 +22,7 @@ ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+void                SetStdOutToNewConsole();
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -30,7 +33,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: Place code here.
-
+    SetStdOutToNewConsole();
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_GAMECORE, szWindowClass, MAX_LOADSTRING);
@@ -47,7 +50,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MSG msg;
     float gameTime = 0.0;
     myTimer.Reset();
-
+    char buffer[_MAX_U64TOSTR_BASE2_COUNT];
     // Main message loop:
     while (GetMessage(&msg, nullptr, 0, 0))
     {
@@ -60,6 +63,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
 
         CGame::getInstance().tick(gameTime);
+        _itoa_s(myTimer.GetFPS(), buffer, _countof(buffer), 10);
+        printf("FPS: %s\n", buffer);
 
         myTimer.Update();
     }
@@ -69,7 +74,19 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     return (int) msg.wParam;
 }
 
+void SetStdOutToNewConsole()
+{
+    AllocConsole();
+    AttachConsole(GetCurrentProcessId());
+    FILE* ptr = stdout;
+    freopen_s(&ptr, "CON", "w", stdout);
 
+    HANDLE outh = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD bufferSize = { 160, 51 };
+    SetConsoleScreenBufferSize(outh, bufferSize);
+    SMALL_RECT consoleSize = { 0, 0, 159, 50 };
+    SetConsoleWindowInfo(outh, TRUE, &consoleSize);
+}
 
 //
 //  FUNCTION: MyRegisterClass()

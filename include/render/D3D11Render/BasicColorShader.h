@@ -23,6 +23,7 @@ public:
     BasicColorShader(void);
     void initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, LPCWSTR vsFilePath, LPCWSTR psFilePath);
     void updateShader(ID3D11DeviceContext* pDeviceContext, DirectX::XMMATRIX mWVP);
+    void updateShader(ID3D11DeviceContext* pDeviceContext, glm::mat4 mWVP);
 };
 
 #endif

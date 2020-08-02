@@ -30,6 +30,14 @@ void BasicColorShader::updateShader(ID3D11DeviceContext* pDeviceContext, DirectX
     pDeviceContext->Unmap(m_pCBuffer, 0);
 }
 
+void BasicColorShader::updateShader(ID3D11DeviceContext* pDeviceContext, glm::mat4 mWVP)
+{
+    this->m_sConstantBuffer.mWorldViewProj = DirectX::XMMATRIX(&mWVP[0][0]);
+    ThrowIfFailed(pDeviceContext->Map(m_pCBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &m_sMappedResource));
+    memcpy(m_sMappedResource.pData, &m_sConstantBuffer, sizeof(m_sConstantBuffer));
+    pDeviceContext->Unmap(m_pCBuffer, 0);
+}
+
 BasicColorShader::BasicColorShader(void) : m_pCBuffer(nullptr), m_sConstantBuffer(DirectX::XMMatrixIdentity())
 {
     ZeroMemory(&m_sMappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
