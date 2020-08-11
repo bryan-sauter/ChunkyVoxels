@@ -4,7 +4,11 @@
 #include "stdafx.h"
 #include "render/Renderer.h"
 
-class CGame
+//temp
+#include <vector>
+#include "render/RenderNode.h"
+
+class ChunkyVoxelsMain
 {
 
 private:
@@ -12,16 +16,18 @@ private:
     HINSTANCE m_hInstance;
     Renderer* m_pRenderer;
 
-    CGame();
+    vector<RenderNode> m_vRenderNodes;
+
+    ChunkyVoxelsMain();
 
 public:
-    static CGame& getInstance()
+    static ChunkyVoxelsMain& getInstance()
     {
-        static CGame instance;
+        static ChunkyVoxelsMain instance;
         return instance;
     }
-    CGame(CGame const&) = delete;
-    void operator=(CGame const&) = delete;
+    ChunkyVoxelsMain(ChunkyVoxelsMain const&) = delete;
+    void operator=(ChunkyVoxelsMain const&) = delete;
 
     void initialize(HWND hWnd, HINSTANCE hInstance);
     void tick(float fDt);

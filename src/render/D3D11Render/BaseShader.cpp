@@ -2,8 +2,20 @@
 
 #include "helpers/HResultHelpers.h"
 
-BaseShader::BaseShader():m_pVS(nullptr),m_pPS(nullptr),m_pLayout(nullptr)
+BaseShader::BaseShader(void):m_pVS(nullptr),m_pPS(nullptr),m_pLayout(nullptr)
 {
+}
+
+BaseShader::~BaseShader(void)
+{
+    release();
+}
+
+void BaseShader::release(void)
+{
+    SAFE_RELEASE(m_pVS);
+    SAFE_RELEASE(m_pPS);
+    SAFE_RELEASE(m_pLayout);
 }
 
 void BaseShader::baseInitialize(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, LPCWSTR vsFilePath, LPCWSTR psFilePath)

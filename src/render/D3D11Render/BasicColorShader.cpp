@@ -38,9 +38,14 @@ void BasicColorShader::updateShader(ID3D11DeviceContext* pDeviceContext, glm::ma
     pDeviceContext->Unmap(m_pCBuffer, 0);
 }
 
-BasicColorShader::BasicColorShader(void) : m_pCBuffer(nullptr), m_sConstantBuffer(DirectX::XMMatrixIdentity())
+BasicColorShader::BasicColorShader(void) : m_pCBuffer(nullptr), m_sConstantBuffer(DirectX::XMMatrixIdentity()), BaseShader()
 {
     ZeroMemory(&m_sMappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
+}
+
+BasicColorShader::~BasicColorShader(void)
+{
+    SAFE_RELEASE(m_pCBuffer);
 }
 
 void BasicColorShader::initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, LPCWSTR vsFilePath, LPCWSTR psFilePath)

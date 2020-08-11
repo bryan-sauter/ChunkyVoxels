@@ -2,10 +2,26 @@
 
 #include "helpers/HResultHelpers.h"
 #include "helpers/Globals.h"
-#include "core/CGame.h"
+#include "core/ChunkyVoxelsMain.h"
+#include "ecs/World.h"
 #include "render/D3D11Render/D3D11Declares.h"
 
 #include "render/D3D11Render/BasicColorShader.h"
+#include "render/RenderNode.h"
+
+D3D11Renderer::D3D11Renderer(ECS::World* world) : ECS::System(world)
+{
+    m_pCamera = nullptr;
+    m_pDevice = nullptr;
+    m_pDeviceContext = nullptr;
+    m_pRenderTarget = nullptr;
+    m_pDepthBuffer = nullptr;
+    m_pVBuffer = nullptr;
+    m_pIBuffer = nullptr;
+    m_pSwapChain = nullptr;
+
+    m_pShader = nullptr;
+}
 
 bool D3D11Renderer::initialize(void)
 {
@@ -20,7 +36,7 @@ bool D3D11Renderer::initialize(void)
     swapChainDESC.BufferDesc.Width = Globals::getInstance().getWindowWidth();
     swapChainDESC.BufferDesc.Height = Globals::getInstance().getWindowHeight();
     swapChainDESC.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;        // how swap chain is to be used
-    swapChainDESC.OutputWindow = CGame::getInstance().getHWND();        // the window to be used
+    swapChainDESC.OutputWindow = ChunkyVoxelsMain::getInstance().getHWND();        // the window to be used
     swapChainDESC.SampleDesc.Count = 1;                                 // how many multisamples
     swapChainDESC.SampleDesc.Quality = 0;
     swapChainDESC.Windowed = !Globals::getInstance().getFullScreen();   // windowed/full-screen mode
@@ -70,6 +86,7 @@ bool D3D11Renderer::initialize(void)
                                     L"./resource/render/D3D11Renderer/triangle.shader");
 
     initializePipeline();
+    initializeDepthAndStencilBuffer();
  
     return true;
 }
@@ -108,6 +125,11 @@ void D3D11Renderer::initializePipeline(void)
     // Set the buffer.
     m_pDeviceContext->IASetIndexBuffer(m_pIBuffer, DXGI_FORMAT_R32_UINT, 0);
 
+    SAFE_DELETE(InitData.pSysMem);
+}
+
+void D3D11Renderer::initializeDepthAndStencilBuffer(void)
+{
     D3D11_TEXTURE2D_DESC depthTextureDesc;
     ZeroMemory(&depthTextureDesc, sizeof(depthTextureDesc));
     depthTextureDesc.Width = Globals::getInstance().getWindowWidth();
@@ -165,6 +187,10 @@ void D3D11Renderer::initializePipeline(void)
     m_pDeviceContext->OMSetRenderTargets(1, &m_pRenderTarget, m_pDepthBuffer);
 }
 
+void D3D11Renderer::updateEntity(float fDt, ECS::Entity_ID pEntity)
+{
+}
+
 void D3D11Renderer::update(float dT)
 {
     m_pShader->updateShader(m_pDeviceContext, XMMatrixTranspose(m_pCamera->getViewMatrix() * m_pCamera->getProjectionMatrix()));
@@ -186,11 +212,11 @@ void D3D11Renderer::render(void)
     // select which primtive type we are using
     m_pDeviceContext->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     XMMATRIX matVP = m_pCamera->getViewMatrix() * m_pCamera->getProjectionMatrix();
-    XMFLOAT3 vector;
-    for (int i = 0; i < 100; ++i) {
+    glm::vec3 vPosition;
+    for (vector<RenderNode*>::iterator it = m_RenderSet.getBeginIterator(); it != m_RenderSet.getEndIterator(); ++it) {
         // draw the vertex buffer to the back buffer
-        vector.x = 1.0f * i;
-        XMMATRIX translation = XMMatrixTranslation(vector.x, 0.0f, 0.0f);
+        vPosition = (*it)->getPosition();
+        XMMATRIX translation = XMMatrixTranslation(vPosition.x, vPosition.y, vPosition.z);
         m_pShader->updateShader(m_pDeviceContext, XMMatrixTranspose(translation * matVP));
         m_pDeviceContext->DrawIndexed(36, 0, 0);
     }
@@ -203,13 +229,13 @@ bool D3D11Renderer::shutdown(void)
     //switch to windowed to shutdown
     m_pSwapChain->SetFullscreenState(FALSE, NULL);
 
+    SAFE_DELETE(m_pCamera);
+    SAFE_DELETE(m_pShader);
+
     SAFE_RELEASE(m_pSwapChain);
     SAFE_RELEASE(m_pRenderTarget);
     SAFE_RELEASE(m_pDepthBuffer);
     SAFE_RELEASE(m_pDevice);
     SAFE_RELEASE(m_pDeviceContext);
-
-    SAFE_DELETE(m_pCamera);
-    SAFE_DELETE(m_pShader);
     return true;
 }

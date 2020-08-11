@@ -14,7 +14,9 @@ protected:
     void checkForShaderCompileError(HRESULT hr, ID3DBlob* shaderBlob, ID3DBlob* errorBlob);
     void baseInitialize(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, LPCWSTR vsFilePath, LPCWSTR psFilePath);
 public:
-    BaseShader();
+    BaseShader(void);
+    virtual ~BaseShader(void) = 0;
+    void release(void);
     virtual void initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, LPCWSTR vsFilePath, LPCWSTR psFilePath) = 0;
     virtual void updateShader(ID3D11DeviceContext* pDeviceContext, DirectX::XMMATRIX mWVP) = 0;
     virtual void updateShader(ID3D11DeviceContext* pDeviceContext, glm::mat4 mWVP) = 0;

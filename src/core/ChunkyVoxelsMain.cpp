@@ -1,22 +1,32 @@
 #include "stdafx.h"
-#include "core/CGame.h"
+#include "core/ChunkyVoxelsMain.h"
 #include "render/Camera.h"
 #include "render/D3D11Render/D3D11Renderer.h"
+#include "helpers/HResultHelpers.h"
 
-CGame::CGame() : m_hWnd(NULL), m_hInstance(NULL), m_pRenderer(nullptr)
+#include "ecs/World.h"
+#include "ecs/System.h"
+
+ChunkyVoxelsMain::ChunkyVoxelsMain() : m_hWnd(NULL), m_hInstance(NULL), m_pRenderer(nullptr)
 {
 }
 
-void CGame::initialize(HWND hWnd, HINSTANCE hInstance)
+void ChunkyVoxelsMain::initialize(HWND hWnd, HINSTANCE hInstance)
 {
     this->m_hWnd = hWnd;
     this->m_hInstance = hInstance;
 
-    m_pRenderer = new D3D11Renderer();
+    ECS::World* world = new ECS::World();
+    m_pRenderer = new D3D11Renderer(world);
     m_pRenderer->initialize();
+    for (int i = 0; i < 100; ++i)
+    {
+        m_vRenderNodes.push_back(*(new RenderNode(1.0f * i, 0.0f, 0.0f)));
+        m_pRenderer->addRenderNode(&(m_vRenderNodes[i]));
+    }
 }
 
-void CGame::tick(float fDt)
+void ChunkyVoxelsMain::tick(float fDt)
 {
     if (GetAsyncKeyState('A'))
     {
@@ -50,9 +60,7 @@ void CGame::tick(float fDt)
     }
 }
 
-void CGame::shutdown(void)
+void ChunkyVoxelsMain::shutdown(void)
 {
-    if (m_pRenderer) {
-        m_pRenderer->shutdown();
-    }
+    SAFE_SHUTDOWN(m_pRenderer);
 }

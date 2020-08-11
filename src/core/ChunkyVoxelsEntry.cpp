@@ -1,28 +1,11 @@
-// GameCore.cpp : Defines the entry point for the application.
-//
+
 #include "stdafx.h"
-#include "core/GameCore.h"
-#include "core/CGame.h"
+#include "core/ChunkyVoxelsEntry.h"
+#include "core/ChunkyVoxelsMain.h"
 #include "helpers/Globals.h"
-#include "helpers/Timer.h"
 
 #include <io.h>
 #include <fcntl.h>
-
-#define MAX_LOADSTRING 100
-
-// Global Variables:
-HINSTANCE hInst;                                // current instance
-WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
-WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
-Timer myTimer;
-
-// Forward declarations of functions included in this code module:
-ATOM                MyRegisterClass(HINSTANCE hInstance);
-BOOL                InitInstance(HINSTANCE, int);
-LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
-INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
-void                SetStdOutToNewConsole();
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -32,8 +15,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    // TODO: Place code here.
+#if CV_DEBUG
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
     SetStdOutToNewConsole();
+    char buffer[_MAX_U64TOSTR_BASE2_COUNT];
+    float elapsedTime = 0.0f;
+#endif
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_GAMECORE, szWindowClass, MAX_LOADSTRING);
@@ -48,9 +35,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_GAMECORE));
 
     MSG msg;
-    float gameTime = 0.0;
+    float gameTime = 0.0f;
     myTimer.Reset();
-    char buffer[_MAX_U64TOSTR_BASE2_COUNT];
     // Main message loop:
     while (GetMessage(&msg, nullptr, 0, 0))
     {
@@ -62,14 +48,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             DispatchMessage(&msg);
         }
 
-        CGame::getInstance().tick(gameTime);
-        _itoa_s(myTimer.GetFPS(), buffer, _countof(buffer), 10);
-        printf("FPS: %s\n", buffer);
+        ChunkyVoxelsMain::getInstance().tick(gameTime);
+#if CV_DEBUG
+        elapsedTime += gameTime;
+        if (elapsedTime > 1.0f)
+        {
+            _itoa_s(myTimer.GetFPS(), buffer, _countof(buffer), 10);
+            printf("FPS: %s\n", buffer);
+            elapsedTime = 0.0f;
+        }
+#endif
 
         myTimer.Update();
     }
 
-    CGame::getInstance().shutdown();
+    ChunkyVoxelsMain::getInstance().shutdown();
 
     return (int) msg.wParam;
 }
@@ -140,7 +133,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
 
-   CGame::getInstance().initialize(hWnd, hInstance);
+   ChunkyVoxelsMain::getInstance().initialize(hWnd, hInstance);
 
    return TRUE;
 }

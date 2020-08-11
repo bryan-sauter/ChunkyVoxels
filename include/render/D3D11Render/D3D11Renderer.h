@@ -6,7 +6,11 @@
 #include "render/Camera.h"
 #include "render/D3D11Render/BaseShader.h"
 
-class D3D11Renderer : public Renderer
+#include "ecs/System.h"
+#include "ecs/Entity.h"
+
+
+class D3D11Renderer : public Renderer, public ECS::System
 {
 private:
     //this is not at the right level currently, the gamestate should own this. Once it is created.
@@ -25,7 +29,10 @@ private:
     const float m_clearColor[4] = { 0.0f, 0.2f, 0.4f, 1.0f };
 
     void initializePipeline(void);
+    void initializeDepthAndStencilBuffer(void);
+    void updateEntity(float fDt, ECS::Entity_ID pEntity);
 public:
+    D3D11Renderer(ECS::World* world);
     bool initialize(void);
     void update(float dT);
     void render(void);

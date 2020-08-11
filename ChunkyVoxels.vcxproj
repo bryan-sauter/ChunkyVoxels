@@ -153,11 +153,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\core\CGame.h" />
+    <ClInclude Include="include\core\ChunkyVoxelsMain.h" />
     <ClInclude Include="include\core\Config.h" />
-    <ClInclude Include="include\core\GameCore.h" />
+    <ClInclude Include="include\core\ChunkyVoxelsEntry.h" />
     <ClInclude Include="include\core\HResultHelpers.h" />
     <ClInclude Include="include\core\resource.h" />
+    <ClInclude Include="include\ecs\Component.h" />
+    <ClInclude Include="include\ecs\ECSTypes.h" />
+    <ClInclude Include="include\ecs\Entity.h" />
+    <ClInclude Include="include\ecs\System.h" />
+    <ClInclude Include="include\ecs\World.h" />
     <ClInclude Include="include\helpers\Globals.h" />
     <ClInclude Include="include\helpers\HResultHelpers.h" />
     <ClInclude Include="include\helpers\Timer.h" />
@@ -168,6 +173,8 @@
     <ClInclude Include="include\render\D3D11Render\D3D11Declares.h" />
     <ClInclude Include="include\render\D3D11Render\D3D11Renderer.h" />
     <ClInclude Include="include\render\Renderer.h" />
+    <ClInclude Include="include\render\RenderNode.h" />
+    <ClInclude Include="include\render\RenderSet.h" />
     <ClInclude Include="include\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
@@ -178,14 +185,20 @@
     <ResourceCompile Include="resource\core\GameCore.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\core\CGame.cpp" />
-    <ClCompile Include="src\core\GameCore.cpp" />
+    <ClCompile Include="include\ecs\Entity.cpp" />
+    <ClCompile Include="src\core\ChunkyVoxelsMain.cpp" />
+    <ClCompile Include="src\core\ChunkyVoxelsEntry.cpp" />
+    <ClCompile Include="src\ecs\System.cpp" />
+    <ClCompile Include="src\ecs\World.cpp" />
     <ClCompile Include="src\helpers\Timer.cpp" />
     <ClCompile Include="src\render\Camera.cpp" />
     <ClCompile Include="src\render\D3D11Render\BaseShader.cpp" />
     <ClCompile Include="src\render\D3D11Render\BasicColorShader.cpp" />
     <ClCompile Include="src\render\D3D11Render\D3D11Camera.cpp" />
     <ClCompile Include="src\render\D3D11Render\D3D11Renderer.cpp" />
+    <ClCompile Include="src\render\Renderer.cpp" />
+    <ClCompile Include="src\render\RenderNode.cpp" />
+    <ClCompile Include="src\render\RenderSet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resource\render\D3D11Renderer\triangle.shader" />
