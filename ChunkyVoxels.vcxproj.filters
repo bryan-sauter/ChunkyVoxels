@@ -132,6 +132,9 @@
     <ClInclude Include="include\ecs\Component.h">
       <Filter>Header Files\ecs</Filter>
     </ClInclude>
+    <ClInclude Include="include\ecs\ComponentStorage.h">
+      <Filter>Header Files\ecs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resource\core\GameCore.ico">
@@ -184,9 +187,6 @@
       <Filter>Source Files\ecs</Filter>
     </ClCompile>
     <ClCompile Include="src\ecs\World.cpp">
-      <Filter>Source Files\ecs</Filter>
-    </ClCompile>
-    <ClCompile Include="include\ecs\Entity.cpp">
       <Filter>Source Files\ecs</Filter>
     </ClCompile>
   </ItemGroup>

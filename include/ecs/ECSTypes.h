@@ -6,15 +6,16 @@
 
 namespace ECS
 {
-    //hide the typing from downstream users
+    // hide the typing from downstream users
+    // simple unsigned ints are fine, enum is for readability
     typedef unsigned int ComponentType_ID;
     typedef set<ComponentType_ID> ComponentTypeSet;
-    enum class eComponentType
+    enum eComponentType
     {
-        COMP_INVALID = 0,
-        COMP_TRANSFORM,
-        COMP_RENDERABLE,
-        COMP_COLLIDABLE,
+        ECS_COMP_INVALID = 0,
+        ECS_COMP_TRANSFORM,
+        ECS_COMP_RENDERABLE,
+        ECS_COMP_COLLIDABLE,
 
     };
 }

@@ -16,7 +16,7 @@ private:
     HINSTANCE m_hInstance;
     Renderer* m_pRenderer;
 
-    vector<RenderNode> m_vRenderNodes;
+    vector<RenderNode*> m_vRenderNodes;
 
     ChunkyVoxelsMain();
 

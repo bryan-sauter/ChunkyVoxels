@@ -9,14 +9,13 @@ namespace ECS
     System::~System(void)
     {
     }
-
+    // loop through the entities and call the systems update on them
     void System::updateEntities(float fDt)
     {
-        for (auto entity = m_sysEntities.begin();
-            entity != m_sysEntities.end();
-            ++entity)
+        for (auto entity : m_sysEntities)
         {
-            updateEntity(fDt, *entity);
+            // call the pure virtual function that should be defined by the child class
+            updateEntity(fDt, entity);
         }
     }
 }

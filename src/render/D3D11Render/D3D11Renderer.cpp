@@ -231,6 +231,8 @@ bool D3D11Renderer::shutdown(void)
 
     SAFE_DELETE(m_pCamera);
     SAFE_DELETE(m_pShader);
+    //needs to be removed but just for ease of testing, doing the clean up here for now
+    SAFE_DELETE(this->m_world);
 
     SAFE_RELEASE(m_pSwapChain);
     SAFE_RELEASE(m_pRenderTarget);

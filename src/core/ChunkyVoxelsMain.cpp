@@ -20,9 +20,10 @@ void ChunkyVoxelsMain::initialize(HWND hWnd, HINSTANCE hInstance)
     m_pRenderer = new D3D11Renderer(world);
     m_pRenderer->initialize();
     for (int i = 0; i < 100; ++i)
+        for( unsigned int j = 0; j < 100; ++j)
     {
-        m_vRenderNodes.push_back(*(new RenderNode(1.0f * i, 0.0f, 0.0f)));
-        m_pRenderer->addRenderNode(&(m_vRenderNodes[i]));
+        m_vRenderNodes.push_back((new RenderNode(1.0f * i, 0.0f, 1.0f * j)));
+        m_pRenderer->addRenderNode((m_vRenderNodes.back()));
     }
 }
 
@@ -62,5 +63,9 @@ void ChunkyVoxelsMain::tick(float fDt)
 
 void ChunkyVoxelsMain::shutdown(void)
 {
+    for (unsigned int i = 0; i < m_vRenderNodes.size(); ++i)
+    {
+        delete m_vRenderNodes[i];
+    }
     SAFE_SHUTDOWN(m_pRenderer);
 }

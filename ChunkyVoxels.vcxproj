@@ -159,6 +159,7 @@
     <ClInclude Include="include\core\HResultHelpers.h" />
     <ClInclude Include="include\core\resource.h" />
     <ClInclude Include="include\ecs\Component.h" />
+    <ClInclude Include="include\ecs\ComponentStorage.h" />
     <ClInclude Include="include\ecs\ECSTypes.h" />
     <ClInclude Include="include\ecs\Entity.h" />
     <ClInclude Include="include\ecs\System.h" />
@@ -185,7 +186,6 @@
     <ResourceCompile Include="resource\core\GameCore.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="include\ecs\Entity.cpp" />
     <ClCompile Include="src\core\ChunkyVoxelsMain.cpp" />
     <ClCompile Include="src\core\ChunkyVoxelsEntry.cpp" />
     <ClCompile Include="src\ecs\System.cpp" />
