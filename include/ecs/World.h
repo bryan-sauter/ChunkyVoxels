@@ -19,14 +19,14 @@ namespace ECS
         // the current set of systems registered to the world to do work
         vector<System*> m_vSystems;
         // the component storage bundles, type->all components of type
-        map<ComponentType_ID, IComponentStorage*> m_componentStorage;
+        map<eComponentType, IComponentStorage*> m_componentStorage;
         // the entities and what component types they have associated with them
         unordered_map<Entity_ID, ComponentTypeSet> m_EntityRegisters;
         // infinitely incrementing counter for the last entity ID used
         Entity_ID m_lastEntityID;
     public:
         World(void);
-        virtual ~World(void);
+        ~World(void);
         /*
          * create a component storage space for components of the type used
          * should be possible to bundle this call into the first call of addComponent
@@ -37,8 +37,9 @@ namespace ECS
             //allows for the scope resolution operator of the ComponentType_ID from templated class
             ASSERT_COMPONENT_STORAGE;
             //pair the component type with the new storagae class
+            IComponentStorage* store = new ComponentStorage<CompClass>();
             return this->m_componentStorage.insert(
-                make_pair(CompClass::m_componentType, new ComponentStorage<CompClass>())).second;
+                make_pair(CompClass::m_componentType, store)).second;
         }
         /*
          * get the component storage for the templated type, create one if it doesn't exist
@@ -55,7 +56,7 @@ namespace ECS
                     return getComponentStorage<CompClass>();
                 }
             }
-            return reinterpret_cast<ComponentStorage<CompClass>*>(*(iCompStore->second));
+            return dynamic_cast<ComponentStorage<CompClass>*>(iCompStore->second);
         }
         /*
          * add a component to a component storage container
@@ -70,7 +71,7 @@ namespace ECS
                 throw runtime_error("Entity_ID was not found\n");
             }
             (*registeredEntity).second.insert(CompClass::m_componentType);
-            return getComponentStorage<CompClass>().add(entity, component);
+            return getComponentStorage<CompClass>()->add(entity, component);
         }
         /*
          * add a system to the World
@@ -96,6 +97,8 @@ namespace ECS
          * destroy and entity along with everything it stands for
          */
         void destroyEntity(const Entity_ID entity);
+        //very ominous sounding, lets clean up our memory usage
+        void destoryWorld(void);
     };
 }
 

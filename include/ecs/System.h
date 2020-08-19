@@ -37,7 +37,7 @@ namespace ECS
             m_sysRegisteredComponents.clear();
         }
         // child class can send the enum/types individually for the components this system wants
-        inline void addRegisteredComponents(ComponentType_ID componentTypeID)
+        inline void addRegisteredComponents(eComponentType componentTypeID)
         {
             m_sysRegisteredComponents.insert(componentTypeID);
         }

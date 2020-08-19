@@ -8,6 +8,9 @@
 #include <vector>
 #include "render/RenderNode.h"
 
+#include "ecs/World.h"
+#include "ecs/System.h"
+
 class ChunkyVoxelsMain
 {
 
@@ -15,8 +18,9 @@ private:
     HWND m_hWnd;
     HINSTANCE m_hInstance;
     Renderer* m_pRenderer;
-
+    ECS::System* m_pRenderSystem;
     vector<RenderNode*> m_vRenderNodes;
+    ECS::World* m_pWorld;
 
     ChunkyVoxelsMain();
 

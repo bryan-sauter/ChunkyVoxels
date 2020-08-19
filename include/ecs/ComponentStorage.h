@@ -2,6 +2,7 @@
 #define COMPONENTSTORAGE_H_
 
 #include "stdafx.h"
+#include "helpers/HResultHelpers.h"
 #include <unordered_map>
 
 #include "ecs/Entity.h"
@@ -10,7 +11,7 @@
 // macro to make sure our templated usages can be updated in one central place
 #define ASSERT_COMPONENT_STORAGE \
 static_assert(is_base_of<Component, CompClass>::value, "CompClass needs to be derived from Component\n"); \
-static_assert(CompClass::m_componentType != static_cast<ComponentType_ID>(eComponentType.ECS_COMP_INVALID), \
+static_assert(CompClass::m_componentType != ECS::eComponentType::ECS_COMP_INVALID, \
     "CompClass must be a valid ComponentType\n")
 
 namespace ECS
@@ -18,8 +19,10 @@ namespace ECS
     class IComponentStorage
     {
     public:
+        virtual ~IComponentStorage(void) {}
         //container class to allow the world to store a raw pointer (old school sorry)
         virtual bool destroyAndRemove(const Entity_ID entity) = 0;
+        virtual void destroy(void) = 0;
     };
     template<typename CompClass>
     class ComponentStorage : public IComponentStorage
@@ -30,10 +33,10 @@ namespace ECS
         // the mapping for entity->components for this storages type
         unordered_map<Entity_ID, CompClass*> m_compStoreMap;
         // defines what type of component this storage instance is keeping
-        static const ComponentType_ID m_compType = CompClass::m_componentType;
+        static const eComponentType m_compType = CompClass::m_componentType;
     public:
         ComponentStorage(void) {}
-        ~ComponentStorage(void) {}
+        ~ComponentStorage(void) { destroy(); }
         // store a pair in our map of an entity to its component of this type
         inline bool add(const Entity_ID entity, CompClass* component)
         {
@@ -68,6 +71,13 @@ namespace ECS
         inline const unordered_map<Entity_ID, CompClass*> getStoredComponents(void)
         {
             return this->m_compStoreMap;
+        }
+        inline void destroy(void)
+        {
+            for (auto C : m_compStoreMap)
+            {
+                delete C.second;
+            }
         }
     };
 }

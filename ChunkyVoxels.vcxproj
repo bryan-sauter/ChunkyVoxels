@@ -100,6 +100,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -129,6 +130,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -160,6 +162,8 @@
     <ClInclude Include="include\core\resource.h" />
     <ClInclude Include="include\ecs\Component.h" />
     <ClInclude Include="include\ecs\ComponentStorage.h" />
+    <ClInclude Include="include\ecs\components\RenderComponent.h" />
+    <ClInclude Include="include\ecs\components\TransformComponent.h" />
     <ClInclude Include="include\ecs\ECSTypes.h" />
     <ClInclude Include="include\ecs\Entity.h" />
     <ClInclude Include="include\ecs\System.h" />

@@ -21,6 +21,8 @@ D3D11Renderer::D3D11Renderer(ECS::World* world) : ECS::System(world)
     m_pSwapChain = nullptr;
 
     m_pShader = nullptr;
+
+    addRegisteredComponents(ECS::eComponentType::ECS_COMP_TRANSFORM);
 }
 
 bool D3D11Renderer::initialize(void)
@@ -227,17 +229,21 @@ void D3D11Renderer::render(void)
 bool D3D11Renderer::shutdown(void)
 {
     //switch to windowed to shutdown
-    m_pSwapChain->SetFullscreenState(FALSE, NULL);
+    if (m_pSwapChain)
+    {
+        m_pSwapChain->SetFullscreenState(FALSE, NULL);
+    }
 
     SAFE_DELETE(m_pCamera);
     SAFE_DELETE(m_pShader);
-    //needs to be removed but just for ease of testing, doing the clean up here for now
-    SAFE_DELETE(this->m_world);
 
+    SAFE_RELEASE(m_pVBuffer);
+    SAFE_RELEASE(m_pIBuffer);
     SAFE_RELEASE(m_pSwapChain);
     SAFE_RELEASE(m_pRenderTarget);
     SAFE_RELEASE(m_pDepthBuffer);
     SAFE_RELEASE(m_pDevice);
     SAFE_RELEASE(m_pDeviceContext);
+
     return true;
 }

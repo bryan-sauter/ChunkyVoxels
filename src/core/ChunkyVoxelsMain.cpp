@@ -7,6 +7,8 @@
 #include "ecs/World.h"
 #include "ecs/System.h"
 
+#include "ecs/Components/TransformComponent.h"
+
 ChunkyVoxelsMain::ChunkyVoxelsMain() : m_hWnd(NULL), m_hInstance(NULL), m_pRenderer(nullptr)
 {
 }
@@ -16,14 +18,21 @@ void ChunkyVoxelsMain::initialize(HWND hWnd, HINSTANCE hInstance)
     this->m_hWnd = hWnd;
     this->m_hInstance = hInstance;
 
-    ECS::World* world = new ECS::World();
-    m_pRenderer = new D3D11Renderer(world);
+    m_pWorld = new ECS::World();
+
+    m_pRenderSystem = new D3D11Renderer(m_pWorld);
+    m_pRenderer = dynamic_cast<D3D11Renderer*>(m_pRenderSystem);
     m_pRenderer->initialize();
+    m_pWorld->addSystem(m_pRenderSystem);
+    m_pWorld->createComponentStorage<ECS::TransformComponent>();
+
     for (int i = 0; i < 100; ++i)
         for( unsigned int j = 0; j < 100; ++j)
     {
-        m_vRenderNodes.push_back((new RenderNode(1.0f * i, 0.0f, 1.0f * j)));
-        m_pRenderer->addRenderNode((m_vRenderNodes.back()));
+        ECS::Entity_ID entity = m_pWorld->createEntity();
+        ECS::TransformComponent* tComp = new ECS::TransformComponent(1.0f * i, 0.0f, 1.0f * j);
+        m_pWorld->addComponent<ECS::TransformComponent>(entity, tComp);
+        m_pWorld->registerEntity(entity);
     }
 }
 
@@ -68,4 +77,5 @@ void ChunkyVoxelsMain::shutdown(void)
         delete m_vRenderNodes[i];
     }
     SAFE_SHUTDOWN(m_pRenderer);
+    SAFE_DELETE(m_pWorld);
 }

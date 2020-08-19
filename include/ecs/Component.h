@@ -9,12 +9,12 @@ namespace ECS
     class Component
     {
     private:
-        // default constructor is not a valid component creation method
-        Component(void) : m_componentType(ECS_COMP_INVALID) {}
+
     public:
         // TODO - Define the core interfaces we need, just the constructor? OnCreate? OnDestroy?
-        Component(eComponentType componentType) : m_componentType(componentType) {}
-        const ComponentType_ID m_componentType;
+        Component(void) {}
+        virtual ~Component(void) {}
+        static const eComponentType m_componentType = eComponentType::ECS_COMP_INVALID;
     };
 }
 

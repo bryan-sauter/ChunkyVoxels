@@ -33,6 +33,7 @@ private:
     void updateEntity(float fDt, ECS::Entity_ID pEntity);
 public:
     D3D11Renderer(ECS::World* world);
+    ~D3D11Renderer(void) {}
     bool initialize(void);
     void update(float dT);
     void render(void);

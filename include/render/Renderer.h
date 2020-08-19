@@ -9,6 +9,7 @@ class Renderer {
 protected:
     RenderSet m_RenderSet;
 public:
+    virtual ~Renderer(void) {}
     virtual bool initialize(void) = 0;
     virtual void update(float dT) = 0;
     virtual void render(void) = 0;

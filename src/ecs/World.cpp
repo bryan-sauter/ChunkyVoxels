@@ -12,6 +12,7 @@ namespace ECS
     }
     World::~World(void)
     {
+        destoryWorld();
     }
     void World::addSystem(System* system)
     {
@@ -26,7 +27,7 @@ namespace ECS
         size_t nRegisteredSystems = 0;
 
         auto entityToRegister = m_EntityRegisters.find(entity);
-        if (entityToRegister != m_EntityRegisters.end()) {
+        if (entityToRegister == m_EntityRegisters.end()) {
             throw std::runtime_error("The Entity does not exist");
         }
         auto entityComponents = (*entityToRegister).second;
@@ -74,8 +75,8 @@ namespace ECS
     Entity_ID World::createEntity(void)
     {
         assert(m_lastEntityID < maxEntityID);
-        m_EntityRegisters.insert(make_pair(Entity_ID(++m_lastEntityID), ComponentTypeSet()));
-        return m_lastEntityID;
+        m_EntityRegisters.insert(make_pair(Entity_ID(m_lastEntityID + 1), ComponentTypeSet()));
+        return (++m_lastEntityID);
     }
     void World::destroyEntity(const Entity_ID entity)
     {
@@ -93,6 +94,13 @@ namespace ECS
             {
                 (*store).second->destroyAndRemove(entity);
             }
+        }
+    }
+    void World::destoryWorld(void)
+    {
+        for (auto storage : m_componentStorage)
+        {
+            SAFE_DELETE(storage.second);
         }
     }
 }
