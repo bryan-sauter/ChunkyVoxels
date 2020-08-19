@@ -4,6 +4,7 @@
 #include "helpers/Globals.h"
 #include "core/ChunkyVoxelsMain.h"
 #include "ecs/World.h"
+#include "ecs/components/TransformComponent.h"
 #include "render/D3D11Render/D3D11Declares.h"
 
 #include "render/D3D11Render/BasicColorShader.h"
@@ -196,7 +197,6 @@ void D3D11Renderer::updateEntity(float fDt, ECS::Entity_ID pEntity)
 void D3D11Renderer::update(float dT)
 {
     m_pShader->updateShader(m_pDeviceContext, XMMatrixTranspose(m_pCamera->getViewMatrix() * m_pCamera->getProjectionMatrix()));
-//    m_pShader->updateShader(m_pDeviceContext, glm::transpose(m_pCamera->getProjectionMatrix() * m_pCamera->getViewMatrix()));
 }
 
 void D3D11Renderer::render(void)
@@ -215,9 +215,12 @@ void D3D11Renderer::render(void)
     m_pDeviceContext->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     XMMATRIX matVP = m_pCamera->getViewMatrix() * m_pCamera->getProjectionMatrix();
     glm::vec3 vPosition;
-    for (vector<RenderNode*>::iterator it = m_RenderSet.getBeginIterator(); it != m_RenderSet.getEndIterator(); ++it) {
-        // draw the vertex buffer to the back buffer
-        vPosition = (*it)->getPosition();
+    ECS::ComponentStorage<ECS::TransformComponent>* compStorage = 
+        ECS::System::m_world->getComponentStorage<ECS::TransformComponent>();
+    for (auto entity : ECS::System::m_sysEntities)
+    {
+        // draw the vertex buffer to the back 
+        vPosition = compStorage->get(entity)->getPosition();
         XMMATRIX translation = XMMatrixTranslation(vPosition.x, vPosition.y, vPosition.z);
         m_pShader->updateShader(m_pDeviceContext, XMMatrixTranspose(translation * matVP));
         m_pDeviceContext->DrawIndexed(36, 0, 0);

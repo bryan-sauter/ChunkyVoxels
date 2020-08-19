@@ -15,8 +15,6 @@ namespace ECS
     class System
     {
     private:
-        // the entities that this system needs to update and track
-        set<Entity_ID> m_sysEntities;
         // the types of components the world will send to this system
         ComponentTypeSet m_sysRegisteredComponents;
         // having a nullptr to the world is not valid
@@ -25,6 +23,8 @@ namespace ECS
     protected:
         // TODO - revisit if this is needed/useful...event/listener might be a thing
         World* m_world;
+        // the entities that this system needs to update and track
+        set<Entity_ID> m_sysEntities;
         // child class should pass this from its constructor, a set of components this system wants
         inline void setRegisteredComponents(ComponentTypeSet&& registeredComponents)
         {

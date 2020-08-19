@@ -6,6 +6,7 @@
 #include "render/Camera.h"
 #include "render/D3D11Render/BaseShader.h"
 
+#include "ecs/World.h"
 #include "ecs/System.h"
 #include "ecs/Entity.h"
 

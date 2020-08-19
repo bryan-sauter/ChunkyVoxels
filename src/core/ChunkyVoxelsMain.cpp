@@ -24,7 +24,6 @@ void ChunkyVoxelsMain::initialize(HWND hWnd, HINSTANCE hInstance)
     m_pRenderer = dynamic_cast<D3D11Renderer*>(m_pRenderSystem);
     m_pRenderer->initialize();
     m_pWorld->addSystem(m_pRenderSystem);
-    m_pWorld->createComponentStorage<ECS::TransformComponent>();
 
     for (int i = 0; i < 100; ++i)
         for( unsigned int j = 0; j < 100; ++j)

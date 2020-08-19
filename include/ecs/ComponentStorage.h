@@ -76,7 +76,7 @@ namespace ECS
         {
             for (auto C : m_compStoreMap)
             {
-                delete C.second;
+                SAFE_DELETE(C.second);
             }
         }
     };
