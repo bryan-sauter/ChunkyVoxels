@@ -76,7 +76,7 @@ namespace ECS
         /*
          * add a system to the World
          */
-        void addSystem(System* system);
+        System* addSystem(System* system);
         /*
          * register an entity to be manipulated by the ECS
          */

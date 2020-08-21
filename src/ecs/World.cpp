@@ -14,13 +14,15 @@ namespace ECS
     {
         destoryWorld();
     }
-    void World::addSystem(System* system)
+    System* World::addSystem(System* system)
     {
         if (!system || system->getRegisteredComponents().empty())
         {
             throw runtime_error("System is not registered to any components\n");
         }
         m_vSystems.push_back(system);
+
+        return system;
     }
     size_t World::registerEntity(const Entity_ID entity)
     {
