@@ -19,7 +19,6 @@ private:
     HINSTANCE m_hInstance;
     Renderer* m_pRenderer;
     ECS::System* m_pRenderSystem;
-    vector<RenderNode*> m_vRenderNodes;
     ECS::World* m_pWorld;
 
     ChunkyVoxelsMain();

@@ -212,15 +212,15 @@ void D3D11Renderer::render(void)
     m_pDeviceContext->IASetIndexBuffer(m_pIBuffer, DXGI_FORMAT_R32_UINT, 0);
 
     // select which primtive type we are using
-    m_pDeviceContext->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    m_pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     XMMATRIX matVP = m_pCamera->getViewMatrix() * m_pCamera->getProjectionMatrix();
     glm::vec3 vPosition;
-    ECS::ComponentStorage<ECS::TransformComponent>* compStorage = 
-        ECS::System::m_world->getComponentStorage<ECS::TransformComponent>();
-    for (auto entity : ECS::System::m_sysEntities)
+    vector<ECS::TransformComponent*> compStorage = 
+        ECS::System::m_world->getComponentStorage<ECS::TransformComponent>()->getStoredComponents();
+    for (auto entity : compStorage)
     {
         // draw the vertex buffer to the back 
-        vPosition = compStorage->get(entity)->getPosition();
+        vPosition = entity->getPosition();
         XMMATRIX translation = XMMatrixTranslation(vPosition.x, vPosition.y, vPosition.z);
         m_pShader->updateShader(m_pDeviceContext, XMMatrixTranspose(translation * matVP));
         m_pDeviceContext->DrawIndexed(36, 0, 0);

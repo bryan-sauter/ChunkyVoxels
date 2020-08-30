@@ -13,11 +13,12 @@ namespace ECS
         glm::vec3 m_vPosition;
 
     public:
-        TransformComponent(glm::vec3 vPosition)
+        TransformComponent(void) : Component(invalidEntityID), m_vPosition(0.0f) {}
+        TransformComponent(Entity_ID id, glm::vec3 vPosition) : Component(id)
         {
             setPosition(vPosition);
         }
-        TransformComponent(float fX, float fY, float fZ)
+        TransformComponent(Entity_ID id, float fX, float fY, float fZ) : Component(id)
         {
             setPosition(fX, fY, fZ);
         }

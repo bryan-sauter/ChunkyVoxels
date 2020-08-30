@@ -12,7 +12,7 @@
 #define ASSERT_COMPONENT_STORAGE \
 static_assert(is_base_of<Component, CompClass>::value, "CompClass needs to be derived from Component\n"); \
 static_assert(CompClass::m_componentType != ECS::eComponentType::ECS_COMP_INVALID, \
-    "CompClass must be a valid ComponentType\n")
+    "CompClass must be a valid ComponentType\n");
 
 namespace ECS
 {
@@ -21,7 +21,7 @@ namespace ECS
     public:
         virtual ~IComponentStorage(void) {}
         //container class to allow the world to store a raw pointer (old school sorry)
-        virtual bool destroyAndRemove(const Entity_ID entity) = 0;
+        virtual void destroyAndRemove(const Entity_ID entity) = 0;
         virtual void destroy(void) = 0;
     };
     template<typename CompClass>
@@ -31,53 +31,73 @@ namespace ECS
         ASSERT_COMPONENT_STORAGE;
     private:
         // the mapping for entity->components for this storages type
-        unordered_map<Entity_ID, CompClass*> m_compStoreMap;
+        vector<CompClass*> m_compStore;
+        typename vector<CompClass*>::iterator m_storeIter;
         // defines what type of component this storage instance is keeping
         static const eComponentType m_compType = CompClass::m_componentType;
     public:
         ComponentStorage(void) {}
         ~ComponentStorage(void) { destroy(); }
         // store a pair in our map of an entity to its component of this type
-        inline bool add(const Entity_ID entity, CompClass* component)
+        inline bool add(CompClass* component)
         {
-            return this->m_compStoreMap.insert(make_pair(entity,component)).second;
+            if (component->getEntityID() != invalidEntityID)
+            {
+                this->m_compStore.push_back(component);
+                return true;
+            }
+            return false;
         }
         // remove and destroy (delete) the component then remove our reference to the entity
-        inline bool destroyAndRemove(const Entity_ID entity)
+        inline void destroyAndRemove(const Entity_ID entity)
         {
-            auto entityToDestroy = m_compStoreMap.find(entity);
-            if (entityToDestroy != m_compStoreMap.end())
+            auto entityToDestroy = find(entity);
+            if (entityToDestroy != m_compStore.end())
             {
+                m_compStore.erase(entityToDestroy);
                 //TODO - pool usage would need to be 
-                auto componentToDestroy = (*entityToDestroy).second;
+                auto componentToDestroy = *entityToDestroy;
                 if (componentToDestroy)
                 {
                     SAFE_DELETE(componentToDestroy);
                 }
             }
-            return (0 < this->m_compStoreMap.erase(entity));
         }
         // returns true if the entity exists in the map
         inline bool has(const Entity_ID entity)
         {
-            return (this->m_compStoreMap.end() != this->m_compStoreMap.find(entity));
+            m_storeIter = find(entity);
+            return (m_storeIter != m_compStore.end());
         }
         // returns the component pointer to the passed entity
         inline CompClass* get(const Entity_ID entity)
         {
-            return this->m_compStoreMap.at(entity);
+            m_storeIter = find(entity);
+            return (m_storeIter != m_compStore.end()) ? *m_storeIter : nullptr;
         }
         // returns the component storage core map
-        inline const unordered_map<Entity_ID, CompClass*> getStoredComponents(void)
+        inline const vector<CompClass*> getStoredComponents(void)
         {
-            return this->m_compStoreMap;
+            return this->m_compStore;
         }
         inline void destroy(void)
         {
-            for (auto C : m_compStoreMap)
+            for (auto C : m_compStore)
             {
-                SAFE_DELETE(C.second);
+                SAFE_DELETE(C);
             }
+            m_compStore.clear();
+        }
+        inline typename vector<CompClass*>::iterator find(const Entity_ID entity)
+        {
+            for (m_storeIter = m_compStore.begin(); m_storeIter != m_compStore.end(); ++m_storeIter)
+            {
+                if ((*m_storeIter)->getEntityID() == entity)
+                {
+                    break;
+                }
+            }
+            return m_storeIter;
         }
     };
 }

@@ -71,7 +71,7 @@ namespace ECS
                 throw runtime_error("Entity_ID was not found\n");
             }
             (*registeredEntity).second.insert(CompClass::m_componentType);
-            return getComponentStorage<CompClass>()->add(entity, component);
+            return getComponentStorage<CompClass>()->add(component);
         }
         /*
          * add a system to the World

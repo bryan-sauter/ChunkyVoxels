@@ -24,12 +24,14 @@ void ChunkyVoxelsMain::initialize(HWND hWnd, HINSTANCE hInstance)
     m_pRenderer = dynamic_cast<D3D11Renderer*>(m_pWorld->addSystem(m_pRenderSystem));
     m_pRenderer->initialize();
     
-
-    for (int i = 0; i < 100; ++i)
+    
+    for (unsigned int i = 0; i < 100; ++i)
         for( unsigned int j = 0; j < 100; ++j)
     {
         ECS::Entity_ID entity = m_pWorld->createEntity();
-        ECS::TransformComponent* tComp = new ECS::TransformComponent(1.0f * i, 0.0f, 1.0f * j);
+        //contiguous memory will increase performance here
+        //the plan in a later release is to use pools instead, everyone loves swimming right?
+        ECS::TransformComponent* tComp = new ECS::TransformComponent(entity, 1.0f * i, 0.0f, 1.0f * j);
         m_pWorld->addComponent<ECS::TransformComponent>(entity, tComp);
         m_pWorld->registerEntity(entity);
     }
@@ -71,10 +73,7 @@ void ChunkyVoxelsMain::tick(float fDt)
 
 void ChunkyVoxelsMain::shutdown(void)
 {
-    for (unsigned int i = 0; i < m_vRenderNodes.size(); ++i)
-    {
-        delete m_vRenderNodes[i];
-    }
-    SAFE_SHUTDOWN(m_pRenderer);
+    m_pRenderer->shutdown();
+    SAFE_DELETE(m_pRenderSystem);
     SAFE_DELETE(m_pWorld);
 }
