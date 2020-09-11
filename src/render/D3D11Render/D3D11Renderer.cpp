@@ -83,11 +83,11 @@ bool D3D11Renderer::initialize(void)
     this->m_pCamera->buildPerspective(glm::pi<float>()/4.0f, 0.1f, 5000.0f);
     this->m_pCamera->setViewPosition(10.0f, 0.0f, -50.0f);
 
-    m_pShader = new BasicColorShader();
+    m_pShader = new BasicTextureShader();
     m_pShader->initialize(m_pDevice, m_pDeviceContext,
-                                    L"./resource/render/D3D11Renderer/triangle.shader",
-                                    L"./resource/render/D3D11Renderer/triangle.shader");
-
+                                    L"./resource/render/D3D11Renderer/textured.fx",
+                                    L"./resource/render/D3D11Renderer/textured.fx");
+    m_pShader->loadTexture(m_pDevice, m_pDeviceContext, L"./resource/render/Texture/sample.dds");
     initializePipeline();
     initializeDepthAndStencilBuffer();
  
@@ -100,7 +100,7 @@ void D3D11Renderer::initializePipeline(void)
     ZeroMemory(&bd, sizeof(bd));
 
     bd.Usage = D3D11_USAGE_DYNAMIC;                // write access access by CPU and GPU
-    bd.ByteWidth = sizeof(VERTEX) * (UINT)(*(&SimpleIndexedCube + 1)-SimpleIndexedCube);             // size is the VERTEX struct * 3
+    bd.ByteWidth = sizeof(TEXTURE_VERTEX) * (UINT)(*(&TexturedIndexedCube + 1)- TexturedIndexedCube);             // size is the VERTEX struct * 3
     bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;       // use as a vertex buffer
     bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;    // allow CPU to write in buffer
 
@@ -109,7 +109,7 @@ void D3D11Renderer::initializePipeline(void)
     // copy the vertices into the buffer
     D3D11_MAPPED_SUBRESOURCE ms;
     ThrowIfFailed(m_pDeviceContext->Map(m_pVBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms));    // map the buffer
-    memcpy(ms.pData, SimpleIndexedCube, sizeof(SimpleIndexedCube));                 // copy the data
+    memcpy(ms.pData, TexturedIndexedCube, sizeof(TexturedIndexedCube));                 // copy the data
     m_pDeviceContext->Unmap(m_pVBuffer, NULL);                                      // unmap the buffer
 
     D3D11_BUFFER_DESC ibd;
@@ -120,7 +120,7 @@ void D3D11Renderer::initializePipeline(void)
     ibd.MiscFlags = 0;
     //define the resource data
     D3D11_SUBRESOURCE_DATA InitData;
-    InitData.pSysMem = buildCubeIndex();
+    InitData.pSysMem = buildTexturedCubeIndex();
     InitData.SysMemPitch = 0;
     InitData.SysMemSlicePitch = 0;
     // Create the buffer with the device.
@@ -206,7 +206,7 @@ void D3D11Renderer::render(void)
     m_pDeviceContext->ClearDepthStencilView(m_pDepthBuffer, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
     // select which vertex buffer to display
-    UINT stride = sizeof(VERTEX);
+    UINT stride = sizeof(TEXTURE_VERTEX);
     UINT offset = 0;
     m_pDeviceContext->IASetVertexBuffers(0, 1, &m_pVBuffer, &stride, &offset);
     m_pDeviceContext->IASetIndexBuffer(m_pIBuffer, DXGI_FORMAT_R32_UINT, 0);

@@ -144,6 +144,9 @@
     <ClInclude Include="include\ecs\components\TransformComponent.h">
       <Filter>Header Files\ecs\components</Filter>
     </ClInclude>
+    <ClInclude Include="include\render\D3D11Render\BasicTextureShader.h">
+      <Filter>Header Files\render\D3D11Render\Shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resource\core\GameCore.ico">
@@ -198,10 +201,19 @@
     <ClCompile Include="src\ecs\World.cpp">
       <Filter>Source Files\ecs</Filter>
     </ClCompile>
+    <ClCompile Include="src\render\D3D11Render\BasicTextureShader.cpp">
+      <Filter>Source Files\render\D3D11Render\Shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="resource\render\D3D11Renderer\triangle.shader">
+    <None Include="resource\render\D3D11Renderer\textured.fx">
       <Filter>Resource Files\render\D3D11Render\shaders</Filter>
     </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="resource\render\D3D11Renderer\color.fx">
+      <Filter>Resource Files\render\D3D11Render\shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -6,6 +6,8 @@
 #include "render/Camera.h"
 #include "render/D3D11Render/BaseShader.h"
 
+#include "render/D3D11Render/BasicTextureShader.h"
+
 #include "ecs/World.h"
 #include "ecs/System.h"
 #include "ecs/Entity.h"
@@ -25,7 +27,7 @@ private:
     ID3D11Buffer* m_pIBuffer;//will be part of render nodes or mesh manager
     IDXGISwapChain* m_pSwapChain;
 
-    BaseShader* m_pShader;
+    BasicTextureShader* m_pShader;
 
     const float m_clearColor[4] = { 0.0f, 0.2f, 0.4f, 1.0f };
 

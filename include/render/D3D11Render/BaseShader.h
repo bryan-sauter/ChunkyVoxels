@@ -12,7 +12,7 @@ protected:
     ID3D11InputLayout* m_pLayout;
 
     void checkForShaderCompileError(HRESULT hr, ID3DBlob* shaderBlob, ID3DBlob* errorBlob);
-    void baseInitialize(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, LPCWSTR vsFilePath, LPCWSTR psFilePath);
+    void baseInitialize(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, LPCWSTR vsFilePath, LPCWSTR psFilePath, ID3DBlob** VS, ID3DBlob** PS);
 public:
     BaseShader(void);
     virtual ~BaseShader(void) = 0;

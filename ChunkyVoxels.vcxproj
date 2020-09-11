@@ -107,6 +107,10 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <FxCompile>
+      <ShaderType>Effect</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -124,6 +128,12 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <Profile>true</Profile>
     </Link>
+    <FxCompile>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -138,6 +148,10 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <FxCompile>
+      <ShaderType>Effect</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -155,6 +169,12 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <Profile>true</Profile>
     </Link>
+    <FxCompile>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\core\ChunkyVoxelsMain.h" />
@@ -176,6 +196,7 @@
     <ClInclude Include="include\render\Camera.h" />
     <ClInclude Include="include\render\D3D11Render\BaseShader.h" />
     <ClInclude Include="include\render\D3D11Render\BasicColorShader.h" />
+    <ClInclude Include="include\render\D3D11Render\BasicTextureShader.h" />
     <ClInclude Include="include\render\D3D11Render\D3D11Camera.h" />
     <ClInclude Include="include\render\D3D11Render\D3D11Declares.h" />
     <ClInclude Include="include\render\D3D11Render\D3D11Renderer.h" />
@@ -200,6 +221,7 @@
     <ClCompile Include="src\render\Camera.cpp" />
     <ClCompile Include="src\render\D3D11Render\BaseShader.cpp" />
     <ClCompile Include="src\render\D3D11Render\BasicColorShader.cpp" />
+    <ClCompile Include="src\render\D3D11Render\BasicTextureShader.cpp" />
     <ClCompile Include="src\render\D3D11Render\D3D11Camera.cpp" />
     <ClCompile Include="src\render\D3D11Render\D3D11Renderer.cpp" />
     <ClCompile Include="src\render\Renderer.cpp" />
@@ -207,9 +229,22 @@
     <ClCompile Include="src\render\RenderSet.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="resource\render\D3D11Renderer\triangle.shader" />
+    <None Include="packages.config" />
+    <None Include="resource\render\D3D11Renderer\textured.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="resource\render\D3D11Renderer\color.fx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\Microsoft.XAudio2.Redist.1.2.3\build\native\Microsoft.XAudio2.Redist.targets" Condition="Exists('packages\Microsoft.XAudio2.Redist.1.2.3\build\native\Microsoft.XAudio2.Redist.targets')" />
+    <Import Project="packages\directxtk_desktop_2017.2020.8.15.1\build\native\directxtk_desktop_2017.targets" Condition="Exists('packages\directxtk_desktop_2017.2020.8.15.1\build\native\directxtk_desktop_2017.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\Microsoft.XAudio2.Redist.1.2.3\build\native\Microsoft.XAudio2.Redist.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.XAudio2.Redist.1.2.3\build\native\Microsoft.XAudio2.Redist.targets'))" />
+    <Error Condition="!Exists('packages\directxtk_desktop_2017.2020.8.15.1\build\native\directxtk_desktop_2017.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\directxtk_desktop_2017.2020.8.15.1\build\native\directxtk_desktop_2017.targets'))" />
+  </Target>
 </Project>

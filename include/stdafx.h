@@ -42,7 +42,7 @@ typedef struct D3DXCOLOR {
 #define FORWARD_SPEED 7.0f
 //all debug statements involve the visual studio declaration
 //however we might want to override that for a release issue
-#define CV_DEBUG (_DEBUG || 0)
+#define CV_DEBUG (_DEBUG || 1)
 
 #if CV_DEBUG
     #define _CRTDBG_MAP_ALLOC
