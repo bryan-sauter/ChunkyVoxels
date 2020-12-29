@@ -3,10 +3,7 @@ cbuffer VS_CONSTANT_BUFFER {
 };
 
 Texture2D shaderTexture;
-SamplerState SampleType
-{
-    Filter = MIN_MAG_MIP_LINEAR;
-};
+SamplerState SampleType;
 
 struct VS_Input
 {

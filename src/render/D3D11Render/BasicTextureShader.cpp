@@ -70,8 +70,8 @@ void BasicTextureShader::initialize(ID3D11Device* pDevice, ID3D11DeviceContext* 
 void BasicTextureShader::loadTexture(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, const wchar_t* texFilePath)
 {
     ThrowIfFailed(DirectX::CreateDDSTextureFromFile(pDevice, texFilePath, &m_pTexture, &m_pResourceView));
-
-    pDeviceContext->GenerateMips(m_pResourceView);
+    //D3D11_TEXTURE2D_DESC desc;
+    //((ID3D11Texture2D*)m_pTexture)->GetDesc(&desc);
 
     D3D11_SAMPLER_DESC sampDesc;
     ZeroMemory(&sampDesc, sizeof(sampDesc));

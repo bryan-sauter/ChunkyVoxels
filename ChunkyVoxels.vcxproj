@@ -200,6 +200,8 @@
     <ClInclude Include="include\render\D3D11Render\D3D11Camera.h" />
     <ClInclude Include="include\render\D3D11Render\D3D11Declares.h" />
     <ClInclude Include="include\render\D3D11Render\D3D11Renderer.h" />
+    <ClInclude Include="include\render\D3D11Render\D3D11TextureHandle.h" />
+    <ClInclude Include="include\render\D3D11Render\D3D11TextureManager.h" />
     <ClInclude Include="include\render\Renderer.h" />
     <ClInclude Include="include\render\RenderNode.h" />
     <ClInclude Include="include\render\RenderSet.h" />
@@ -224,6 +226,7 @@
     <ClCompile Include="src\render\D3D11Render\BasicTextureShader.cpp" />
     <ClCompile Include="src\render\D3D11Render\D3D11Camera.cpp" />
     <ClCompile Include="src\render\D3D11Render\D3D11Renderer.cpp" />
+    <ClCompile Include="src\render\D3D11Render\D3D11TextureManager.cpp" />
     <ClCompile Include="src\render\Renderer.cpp" />
     <ClCompile Include="src\render\RenderNode.cpp" />
     <ClCompile Include="src\render\RenderSet.cpp" />

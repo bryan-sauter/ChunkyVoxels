@@ -147,6 +147,12 @@
     <ClInclude Include="include\render\D3D11Render\BasicTextureShader.h">
       <Filter>Header Files\render\D3D11Render\Shaders</Filter>
     </ClInclude>
+    <ClInclude Include="include\render\D3D11Render\D3D11TextureManager.h">
+      <Filter>Header Files\render\D3D11Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\D3D11Render\D3D11TextureHandle.h">
+      <Filter>Header Files\render\D3D11Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resource\core\GameCore.ico">
@@ -203,6 +209,9 @@
     </ClCompile>
     <ClCompile Include="src\render\D3D11Render\BasicTextureShader.cpp">
       <Filter>Source Files\render\D3D11Render\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\D3D11Render\D3D11TextureManager.cpp">
+      <Filter>Source Files\render\D3D11Render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
