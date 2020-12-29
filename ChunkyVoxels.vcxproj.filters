@@ -55,6 +55,15 @@
     <Filter Include="Source Files\render\D3D11Render\Shaders">
       <UniqueIdentifier>{c93333cb-2039-4a41-9a00-0adf46ebad77}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ecs">
+      <UniqueIdentifier>{ba5a1121-03dc-490f-a5c0-be3d5f32aab0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ecs">
+      <UniqueIdentifier>{bdfb8aa8-cbed-4e5b-9aea-27270f5c4d35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ecs\components">
+      <UniqueIdentifier>{6f3b1368-207a-4c58-9b05-e66c2d6e8098}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\render\D3D11Render\BaseShader.h">
@@ -72,13 +81,7 @@
     <ClInclude Include="include\helpers\Globals.h">
       <Filter>Header Files\helpers</Filter>
     </ClInclude>
-    <ClInclude Include="include\core\CGame.h">
-      <Filter>Header Files\core</Filter>
-    </ClInclude>
     <ClInclude Include="include\core\Config.h">
-      <Filter>Header Files\core</Filter>
-    </ClInclude>
-    <ClInclude Include="include\core\GameCore.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
     <ClInclude Include="include\core\HResultHelpers.h">
@@ -105,6 +108,51 @@
     <ClInclude Include="include\render\D3D11Render\BasicColorShader.h">
       <Filter>Header Files\render\D3D11Render\Shaders</Filter>
     </ClInclude>
+    <ClInclude Include="include\core\ChunkyVoxelsEntry.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core\ChunkyVoxelsMain.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\RenderSet.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\RenderNode.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ecs\System.h">
+      <Filter>Header Files\ecs</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ecs\World.h">
+      <Filter>Header Files\ecs</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ecs\Entity.h">
+      <Filter>Header Files\ecs</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ecs\ECSTypes.h">
+      <Filter>Header Files\ecs</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ecs\Component.h">
+      <Filter>Header Files\ecs</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ecs\ComponentStorage.h">
+      <Filter>Header Files\ecs</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ecs\components\RenderComponent.h">
+      <Filter>Header Files\ecs\components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ecs\components\TransformComponent.h">
+      <Filter>Header Files\ecs\components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\D3D11Render\BasicTextureShader.h">
+      <Filter>Header Files\render\D3D11Render\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\D3D11Render\D3D11TextureManager.h">
+      <Filter>Header Files\render\D3D11Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\D3D11Render\D3D11TextureHandle.h">
+      <Filter>Header Files\render\D3D11Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resource\core\GameCore.ico">
@@ -126,12 +174,6 @@
     <ClCompile Include="src\render\D3D11Render\D3D11Renderer.cpp">
       <Filter>Source Files\render\D3D11Render</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\CGame.cpp">
-      <Filter>Source Files\core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\GameCore.cpp">
-      <Filter>Source Files\core</Filter>
-    </ClCompile>
     <ClCompile Include="src\render\Camera.cpp">
       <Filter>Source Files\render</Filter>
     </ClCompile>
@@ -144,10 +186,43 @@
     <ClCompile Include="src\render\D3D11Render\BasicColorShader.cpp">
       <Filter>Source Files\render\D3D11Render\Shaders</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\ChunkyVoxelsEntry.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\ChunkyVoxelsMain.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\RenderSet.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\RenderNode.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\Renderer.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\System.cpp">
+      <Filter>Source Files\ecs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\World.cpp">
+      <Filter>Source Files\ecs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\D3D11Render\BasicTextureShader.cpp">
+      <Filter>Source Files\render\D3D11Render\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\D3D11Render\D3D11TextureManager.cpp">
+      <Filter>Source Files\render\D3D11Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="resource\render\D3D11Renderer\triangle.shader">
+    <None Include="resource\render\D3D11Renderer\textured.fx">
       <Filter>Resource Files\render\D3D11Render\shaders</Filter>
     </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="resource\render\D3D11Renderer\color.fx">
+      <Filter>Resource Files\render\D3D11Render\shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

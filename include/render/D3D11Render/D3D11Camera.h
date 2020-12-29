@@ -1,5 +1,5 @@
-#ifndef CAMERA_H_
-#define CAMERA_H_
+#ifndef D3D11CAMERA_H_
+#define D3D11CAMERA_H_
 
 #include "stdafx.h"
 #include "helpers/Globals.h"
@@ -50,4 +50,4 @@ public:
 };
 
 
-#endif //CAMERA_H_
+#endif //D3D11CAMERA_H_

@@ -30,12 +30,12 @@ void Camera::buildPerspective(float fieldOfView, float zNear, float zFar)
 glm::mat4 Camera::getViewMatrix(bool bTranslate)
 {
     glm::mat4 mRotation(m_mViewMatrix), mTransform(1.0f);
-    mRotation[3][0] = mRotation[3][1] = mRotation[3][2] = 0;
+    mRotation[3].x = mRotation[3].y = mRotation[3].z = 0;
     mRotation = glm::transpose(mRotation);
 
-    mTransform[3][0] = -(m_mViewMatrix[3][0]);
-    mTransform[3][1] = -(m_mViewMatrix[3][1]);
-    mTransform[3][2] = -(m_mViewMatrix[3][2]);
+    mTransform[3].x = -(m_mViewMatrix[3].x);
+    mTransform[3].y = -(m_mViewMatrix[3].y);
+    mTransform[3].z = -(m_mViewMatrix[3].z);
 
     mTransform = mTransform * mRotation;
     return (bTranslate ? mTransform : mRotation);
@@ -136,6 +136,18 @@ void Camera::viewRotateLocalX(float fAngle)
 
 void Camera::viewRotateLocalY(float fAngle)
 {
+    glm::mat4 mRotation(1.0f);
+    glm::vec3 vLocalY(m_mViewMatrix[1].x, m_mViewMatrix[1].y, m_mViewMatrix[1].z);
+    mRotation = glm::rotate(mRotation, fAngle, vLocalY);
+
+    glm::vec4 vPosition(m_mViewMatrix[3].x, m_mViewMatrix[3].y, m_mViewMatrix[3].z, m_mViewMatrix[3].w);
+    m_mViewMatrix[3].x = m_mViewMatrix[3].y = m_mViewMatrix[3].z = 0.0f;
+
+    m_mViewMatrix = m_mViewMatrix * mRotation;
+    m_mViewMatrix[3].x = vPosition.x; m_mViewMatrix[3].y = vPosition.y;
+    m_mViewMatrix[3].z = vPosition.z; m_mViewMatrix[3].w = vPosition.w;
+
+    DirectX::XMMATRIX mat(&m_mViewMatrix[0][0]);
 }
 
 void Camera::viewRotateLocalZ(float fAngle)

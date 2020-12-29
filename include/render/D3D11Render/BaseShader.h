@@ -12,11 +12,14 @@ protected:
     ID3D11InputLayout* m_pLayout;
 
     void checkForShaderCompileError(HRESULT hr, ID3DBlob* shaderBlob, ID3DBlob* errorBlob);
-    void baseInitialize(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, LPCWSTR vsFilePath, LPCWSTR psFilePath);
+    void baseInitialize(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, LPCWSTR vsFilePath, LPCWSTR psFilePath, ID3DBlob** VS, ID3DBlob** PS);
 public:
-    BaseShader();
+    BaseShader(void);
+    virtual ~BaseShader(void) = 0;
+    void release(void);
     virtual void initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, LPCWSTR vsFilePath, LPCWSTR psFilePath) = 0;
     virtual void updateShader(ID3D11DeviceContext* pDeviceContext, DirectX::XMMATRIX mWVP) = 0;
+    virtual void updateShader(ID3D11DeviceContext* pDeviceContext, glm::mat4 mWVP) = 0;
 };
 
 

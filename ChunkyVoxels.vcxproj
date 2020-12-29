@@ -100,11 +100,17 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <FxCompile>
+      <ShaderType>Effect</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -122,6 +128,12 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <Profile>true</Profile>
     </Link>
+    <FxCompile>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -129,11 +141,17 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <FxCompile>
+      <ShaderType>Effect</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -151,23 +169,42 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <Profile>true</Profile>
     </Link>
+    <FxCompile>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\core\CGame.h" />
+    <ClInclude Include="include\core\ChunkyVoxelsMain.h" />
     <ClInclude Include="include\core\Config.h" />
-    <ClInclude Include="include\core\GameCore.h" />
+    <ClInclude Include="include\core\ChunkyVoxelsEntry.h" />
     <ClInclude Include="include\core\HResultHelpers.h" />
     <ClInclude Include="include\core\resource.h" />
+    <ClInclude Include="include\ecs\Component.h" />
+    <ClInclude Include="include\ecs\ComponentStorage.h" />
+    <ClInclude Include="include\ecs\components\RenderComponent.h" />
+    <ClInclude Include="include\ecs\components\TransformComponent.h" />
+    <ClInclude Include="include\ecs\ECSTypes.h" />
+    <ClInclude Include="include\ecs\Entity.h" />
+    <ClInclude Include="include\ecs\System.h" />
+    <ClInclude Include="include\ecs\World.h" />
     <ClInclude Include="include\helpers\Globals.h" />
     <ClInclude Include="include\helpers\HResultHelpers.h" />
     <ClInclude Include="include\helpers\Timer.h" />
     <ClInclude Include="include\render\Camera.h" />
     <ClInclude Include="include\render\D3D11Render\BaseShader.h" />
     <ClInclude Include="include\render\D3D11Render\BasicColorShader.h" />
+    <ClInclude Include="include\render\D3D11Render\BasicTextureShader.h" />
     <ClInclude Include="include\render\D3D11Render\D3D11Camera.h" />
     <ClInclude Include="include\render\D3D11Render\D3D11Declares.h" />
     <ClInclude Include="include\render\D3D11Render\D3D11Renderer.h" />
+    <ClInclude Include="include\render\D3D11Render\D3D11TextureHandle.h" />
+    <ClInclude Include="include\render\D3D11Render\D3D11TextureManager.h" />
     <ClInclude Include="include\render\Renderer.h" />
+    <ClInclude Include="include\render\RenderNode.h" />
+    <ClInclude Include="include\render\RenderSet.h" />
     <ClInclude Include="include\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
@@ -178,19 +215,39 @@
     <ResourceCompile Include="resource\core\GameCore.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\core\CGame.cpp" />
-    <ClCompile Include="src\core\GameCore.cpp" />
+    <ClCompile Include="src\core\ChunkyVoxelsMain.cpp" />
+    <ClCompile Include="src\core\ChunkyVoxelsEntry.cpp" />
+    <ClCompile Include="src\ecs\System.cpp" />
+    <ClCompile Include="src\ecs\World.cpp" />
     <ClCompile Include="src\helpers\Timer.cpp" />
     <ClCompile Include="src\render\Camera.cpp" />
     <ClCompile Include="src\render\D3D11Render\BaseShader.cpp" />
     <ClCompile Include="src\render\D3D11Render\BasicColorShader.cpp" />
+    <ClCompile Include="src\render\D3D11Render\BasicTextureShader.cpp" />
     <ClCompile Include="src\render\D3D11Render\D3D11Camera.cpp" />
     <ClCompile Include="src\render\D3D11Render\D3D11Renderer.cpp" />
+    <ClCompile Include="src\render\D3D11Render\D3D11TextureManager.cpp" />
+    <ClCompile Include="src\render\Renderer.cpp" />
+    <ClCompile Include="src\render\RenderNode.cpp" />
+    <ClCompile Include="src\render\RenderSet.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="resource\render\D3D11Renderer\triangle.shader" />
+    <None Include="packages.config" />
+    <None Include="resource\render\D3D11Renderer\textured.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="resource\render\D3D11Renderer\color.fx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\Microsoft.XAudio2.Redist.1.2.3\build\native\Microsoft.XAudio2.Redist.targets" Condition="Exists('packages\Microsoft.XAudio2.Redist.1.2.3\build\native\Microsoft.XAudio2.Redist.targets')" />
+    <Import Project="packages\directxtk_desktop_2017.2020.8.15.1\build\native\directxtk_desktop_2017.targets" Condition="Exists('packages\directxtk_desktop_2017.2020.8.15.1\build\native\directxtk_desktop_2017.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\Microsoft.XAudio2.Redist.1.2.3\build\native\Microsoft.XAudio2.Redist.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.XAudio2.Redist.1.2.3\build\native\Microsoft.XAudio2.Redist.targets'))" />
+    <Error Condition="!Exists('packages\directxtk_desktop_2017.2020.8.15.1\build\native\directxtk_desktop_2017.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\directxtk_desktop_2017.2020.8.15.1\build\native\directxtk_desktop_2017.targets'))" />
+  </Target>
 </Project>
