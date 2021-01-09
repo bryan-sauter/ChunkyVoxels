@@ -17,11 +17,12 @@ private:
 public:
     D3D11TextureManager(void);
 
-    void initialize(ID3D11Device* pDevice, ID3D11ShaderResourceView** m_pResourceView);
-    Texture_ID loadTexture(ID3D11Device* pDevice, ID3D11ShaderResourceView** m_pResourceView, const wchar_t* textureFilePath);
+    void initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext);
+    Texture_ID loadTexture(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, const wchar_t* textureFilePath);
     void shutdown(void);
 
     ID3D11Resource* getTexture(Texture_ID textureID);
+    ID3D11ShaderResourceView* getSRV(Texture_ID textureID);
     ID3D11SamplerState* getSamplerState(Texture_ID textureID);
 };
 

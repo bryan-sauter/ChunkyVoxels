@@ -8,6 +8,7 @@
 #include "ecs/System.h"
 
 #include "ecs/Components/TransformComponent.h"
+#include "ecs/Components/RenderComponent.h"
 
 ChunkyVoxelsMain::ChunkyVoxelsMain() : m_hWnd(NULL), m_hInstance(NULL), m_pRenderer(nullptr)
 {
@@ -33,6 +34,11 @@ void ChunkyVoxelsMain::initialize(HWND hWnd, HINSTANCE hInstance)
         //the plan in a later release is to use pools instead, everyone loves swimming right?
         ECS::TransformComponent* tComp = new ECS::TransformComponent(entity, 1.0f * i, 0.0f, 1.0f * j);
         m_pWorld->addComponent<ECS::TransformComponent>(entity, tComp);
+        m_pWorld->registerEntity(entity);
+
+        entity = m_pWorld->createEntity();
+        ECS::RenderComponent* rComp = new ECS::RenderComponent(entity, defaultTextureID, tComp);
+        m_pWorld->addComponent<ECS::RenderComponent>(entity, rComp);
         m_pWorld->registerEntity(entity);
     }
 }
