@@ -32,12 +32,12 @@ namespace ECS
          * should be possible to bundle this call into the first call of addComponent
          */
         template<typename CompClass>
-        inline bool createComponentStorage(void)
+        inline bool createComponentStorage(unsigned int size = 0)
         {
             //allows for the scope resolution operator of the ComponentType_ID from templated class
             ASSERT_COMPONENT_STORAGE;
             //pair the component type with the new storagae class
-            IComponentStorage* store = new ComponentStorage<CompClass>();
+            IComponentStorage* store = new ComponentStorage<CompClass>(size);
             return this->m_componentStorage.insert(
                 make_pair(CompClass::m_componentType, store)).second;
         }
@@ -72,6 +72,19 @@ namespace ECS
             }
             (*registeredEntity).second.insert(CompClass::m_componentType);
             return getComponentStorage<CompClass>()->add(component);
+        }
+        /*
+         * add a component to a component storage container
+         */
+        template<typename CompClass>
+        inline void preallocateStorage(unsigned int size)
+        {
+            ASSERT_COMPONENT_STORAGE;
+            auto iCompStore = m_componentStorage.find(CompClass::m_componentType);
+            if (m_componentStorage.end() == iCompStore)
+            {
+                createComponentStorage<CompClass>();
+            }
         }
         /*
          * add a system to the World

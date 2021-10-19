@@ -37,6 +37,13 @@ namespace ECS
         static const eComponentType m_compType = CompClass::m_componentType;
     public:
         ComponentStorage(void) {}
+        ComponentStorage(unsigned int size)
+        {
+            if (m_compStore.size() == 0) //crazier things have happened before
+            {
+                m_compStore.reserve(size);
+            }
+        }
         ~ComponentStorage(void) { destroy(); }
         // store a pair in our map of an entity to its component of this type
         inline bool add(CompClass* component)

@@ -72,26 +72,26 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)lib;$(ProjectDir)include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)lib;$(ProjectDir)include;E:\Libraries\BULLET_PHYSICS\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)lib;E:\Libraries\BULLET_PHYSICS\lib;$(LibraryPath)</LibraryPath>
     <SourcePath>$(ProjectDir)src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)lib;$(ProjectDir)include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)lib;$(ProjectDir)include;E:\Libraries\BULLET_PHYSICS\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)lib;E:\Libraries\BULLET_PHYSICS\lib;$(LibraryPath)</LibraryPath>
     <SourcePath>$(ProjectDir)src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)lib;$(ProjectDir)include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)lib;$(ProjectDir)include;E:\Libraries\BULLET_PHYSICS\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)lib;E:\Libraries\BULLET_PHYSICS\lib;$(LibraryPath)</LibraryPath>
     <SourcePath>$(ProjectDir)src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)lib;$(ProjectDir)include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)lib;$(ProjectDir)include;E:\Libraries\BULLET_PHYSICS\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)lib;E:\Libraries\BULLET_PHYSICS\lib;$(LibraryPath)</LibraryPath>
     <SourcePath>$(ProjectDir)src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -106,6 +106,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>"E:\Libraries\BULLET_PHYSICS_debug\lib\*.lib" %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <FxCompile>
       <ShaderType>Effect</ShaderType>
@@ -127,6 +128,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <Profile>true</Profile>
+      <AdditionalOptions>"E:\Libraries\BULLET_PHYSICS\lib\*.lib" %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <FxCompile>
       <ShaderType>Effect</ShaderType>
@@ -147,6 +149,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>"E:\Libraries\BULLET_PHYSICS_debug\lib\*.lib" %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <FxCompile>
       <ShaderType>Effect</ShaderType>
@@ -168,6 +171,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <Profile>true</Profile>
+      <AdditionalOptions>"E:\Libraries\BULLET_PHYSICS\lib\*.lib" %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <FxCompile>
       <ShaderType>Effect</ShaderType>
@@ -180,11 +184,12 @@
     <ClInclude Include="include\core\ChunkyVoxelsMain.h" />
     <ClInclude Include="include\core\Config.h" />
     <ClInclude Include="include\core\ChunkyVoxelsEntry.h" />
-    <ClInclude Include="include\core\HResultHelpers.h" />
     <ClInclude Include="include\core\resource.h" />
+    <ClInclude Include="include\core\targetver.h" />
     <ClInclude Include="include\ecs\Component.h" />
     <ClInclude Include="include\ecs\ComponentStorage.h" />
     <ClInclude Include="include\ecs\components\RenderComponent.h" />
+    <ClInclude Include="include\ecs\components\SimpleColliderComponent.h" />
     <ClInclude Include="include\ecs\components\TransformComponent.h" />
     <ClInclude Include="include\ecs\ECSTypes.h" />
     <ClInclude Include="include\ecs\Entity.h" />
@@ -193,6 +198,7 @@
     <ClInclude Include="include\helpers\Globals.h" />
     <ClInclude Include="include\helpers\HResultHelpers.h" />
     <ClInclude Include="include\helpers\Timer.h" />
+    <ClInclude Include="include\physics\PhysicsWorld.h" />
     <ClInclude Include="include\render\Camera.h" />
     <ClInclude Include="include\render\D3D11Render\BaseShader.h" />
     <ClInclude Include="include\render\D3D11Render\BasicColorShader.h" />
@@ -220,6 +226,7 @@
     <ClCompile Include="src\ecs\System.cpp" />
     <ClCompile Include="src\ecs\World.cpp" />
     <ClCompile Include="src\helpers\Timer.cpp" />
+    <ClCompile Include="src\physics\PhysicsWorld.cpp" />
     <ClCompile Include="src\render\Camera.cpp" />
     <ClCompile Include="src\render\D3D11Render\BaseShader.cpp" />
     <ClCompile Include="src\render\D3D11Render\BasicColorShader.cpp" />

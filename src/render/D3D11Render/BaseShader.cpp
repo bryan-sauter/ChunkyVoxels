@@ -25,14 +25,14 @@ void BaseShader::baseInitialize(ID3D11Device* pDevice, ID3D11DeviceContext* pDev
 #if CV_DEBUG
     HRESULT hr = D3DCompileFromFile(vsFilePath, 0, 0, "VShader", "vs_4_0", D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0, VS, &errorBlob);
 #else
-    HRESULT hr = D3DCompileFromFile(vsFilePath, 0, 0, "VShader", "vs_4_0", 0, 0, &VS, &errorBlob);
+    HRESULT hr = D3DCompileFromFile(vsFilePath, 0, 0, "VShader", "vs_4_0", 0, 0, VS, &errorBlob);
 #endif
     //HRESULT hr = D3DCompileFromFile(L"./resource/render/D3D11Renderer/triangle.shader", 0, 0, "VShader", "vs_4_0", D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0, &VS, &errorBlob);
     checkForShaderCompileError(hr, *VS, errorBlob);
 #if CV_DEBUG
     hr = D3DCompileFromFile(psFilePath, 0, 0, "PShader", "ps_4_0", D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0, PS, &errorBlob);
 #else
-    hr = D3DCompileFromFile(psFilePath, 0, 0, "PShader", "ps_4_0", 0, 0, &PS, &errorBlob);
+    hr = D3DCompileFromFile(psFilePath, 0, 0, "PShader", "ps_4_0", 0, 0, PS, &errorBlob);
 #endif
     //hr = D3DCompileFromFile(L"./resource/render/D3D11Renderer/triangle.shader", 0, 0, "PShader", "ps_4_0", D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0, &PS, &errorBlob);
     checkForShaderCompileError(hr, *PS, errorBlob);

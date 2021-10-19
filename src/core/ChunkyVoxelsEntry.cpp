@@ -38,6 +38,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     float gameTime = 0.0f;
     myTimer.Reset();
     // Main message loop:
+    int i = 0;
     while (GetMessage(&msg, nullptr, 0, 0))
     {
         gameTime = myTimer.GetDeltaTime();
@@ -54,12 +55,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         if (elapsedTime > 1.0f)
         {
             _itoa_s(myTimer.GetFPS(), buffer, _countof(buffer), 10);
-            printf("FPS: %s\n", buffer);
+            printf("FPS: %s - fDt: %f - Frames: %d\n", buffer, gameTime, i);
             elapsedTime = 0.0f;
+            i = 0;
         }
 #endif
 
         myTimer.Update();
+        ++i;
     }
 
     ChunkyVoxelsMain::getInstance().shutdown();

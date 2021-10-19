@@ -35,6 +35,12 @@ namespace ECS
             this->m_vPosition.x = fX;
             this->m_vPosition.y = fY;
             this->m_vPosition.z = fZ;
+        }        
+        inline void setPosition(btVector3 vPosition)
+        {
+            this->m_vPosition.x = vPosition[0];
+            this->m_vPosition.y = vPosition[1];
+            this->m_vPosition.z = vPosition[2];
         }
 
         static const eComponentType m_componentType = eComponentType::ECS_COMP_TRANSFORM;
