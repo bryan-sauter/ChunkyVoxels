@@ -36,7 +36,7 @@ public:
     void operator=(ChunkyVoxelsMain const&) = delete;
 
     void initialize(HWND hWnd, HINSTANCE hInstance);
-    void tick(float fDt);
+    void tick(double fDt);
     void shutdown(void);
 
 

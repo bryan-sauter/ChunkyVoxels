@@ -49,7 +49,7 @@ void Timer::Reset( void )
     QueryPerformanceCounter( &ticks );
 
     // init time at start
-    timeStart = ( float )ticks.QuadPart / ( float )tickFrequency.QuadPart;
+    timeStart = ( double )ticks.QuadPart / ( double )tickFrequency.QuadPart;
 
     // reset frame count
     fps = 0;
@@ -62,10 +62,10 @@ void Timer::Reset( void )
 void Timer::Update( void )
 {
     // locals
-    static float   timePrev = GetTime();
-    static float   timeLastFrame = GetTime();
+    static double  timePrev = GetTime();
+    static double  timeLastFrame = GetTime();
     static int     frames = 0;
-    float          timeNow = GetTime();
+    double          timeNow = GetTime();
 
     // increment frame count
     frames++;
@@ -86,17 +86,17 @@ void Timer::Update( void )
 ///////////////////////////////////////////////////////////////////////////////
 // Returns ( in seconds ) the amount of time from last Reset call.
 ///////////////////////////////////////////////////////////////////////////////
-float Timer::GetTime( void )
+double Timer::GetTime( void )
 {
     // locals
     LARGE_INTEGER   ticks;
-    float           time;
+    double          time;
 
     // get current tick count
     QueryPerformanceCounter( &ticks );
 
     // get current time ( since computer turned on )
-    time = ( float )ticks.QuadPart / ( float )tickFrequency.QuadPart;
+    time = ( double )ticks.QuadPart / ( double )tickFrequency.QuadPart;
 
     // calculate time since reset
     return ( time - timeStart );
@@ -105,7 +105,7 @@ float Timer::GetTime( void )
 ///////////////////////////////////////////////////////////////////////////////
 // Returns ( in seconds ) the amount of time from last frame.
 ///////////////////////////////////////////////////////////////////////////////
-float Timer::GetDeltaTime( void )
+double Timer::GetDeltaTime( void )
 {
     return timeDelta;
 }

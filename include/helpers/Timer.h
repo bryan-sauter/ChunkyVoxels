@@ -29,8 +29,8 @@ class Timer
 {
 private:
     int             fps;
-    float           timeStart;
-    float           timeDelta;
+    double          timeStart;
+    double          timeDelta;
     LARGE_INTEGER   tickFrequency;
 
 public:
@@ -55,12 +55,12 @@ public:
     ///////////////////////////////////////////////////////////////////////////////
     // Returns ( in seconds ) the amount of time from last Reset call.
     ///////////////////////////////////////////////////////////////////////////////
-    float GetTime( void );
+    double GetTime( void );
 
     ///////////////////////////////////////////////////////////////////////////////
     // Returns ( in seconds ) the amount of time from last frame.
     ///////////////////////////////////////////////////////////////////////////////
-    float GetDeltaTime( void );
+    double GetDeltaTime( void );
 
     ///////////////////////////////////////////////////////////////////////////////
     // Returns the number of FRAMES PER SECOND.

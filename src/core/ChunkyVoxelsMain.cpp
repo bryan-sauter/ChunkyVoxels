@@ -49,7 +49,7 @@ void ChunkyVoxelsMain::initialize(HWND hWnd, HINSTANCE hInstance)
                 btTransform startTransform;
                 startTransform.setIdentity();
 
-                btScalar mass(1.f);
+                btScalar mass(3.f);
 
                 //rigidbody is dynamic if and only if mass is non zero, otherwise static
                 bool isDynamic = (mass != 0.f);
@@ -81,7 +81,7 @@ void ChunkyVoxelsMain::initialize(HWND hWnd, HINSTANCE hInstance)
     }
 }
 
-void ChunkyVoxelsMain::tick(float fDt)
+void ChunkyVoxelsMain::tick(double fDt)
 {
     if (GetAsyncKeyState('A'))
     {

@@ -19,7 +19,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
     SetStdOutToNewConsole();
     char buffer[_MAX_U64TOSTR_BASE2_COUNT];
-    float elapsedTime = 0.0f;
+    double elapsedTime = 0.0f;
 #endif
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -35,7 +35,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_GAMECORE));
 
     MSG msg;
-    float gameTime = 0.0f;
+    double gameTime = 0.0f;
     myTimer.Reset();
     // Main message loop:
     int i = 0;
