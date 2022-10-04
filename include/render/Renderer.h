@@ -11,7 +11,7 @@ protected:
 public:
     virtual ~Renderer(void) {}
     virtual bool initialize(void) = 0;
-    virtual void update(float dT) = 0;
+    virtual void update(double dT) = 0;
     virtual void render(void) = 0;
     virtual bool shutdown(void) = 0;
     virtual D3D11Camera* getCamera(void) = 0;

@@ -10,7 +10,7 @@ namespace ECS
     {
     }
     // loop through the entities and call the systems update on them
-    void System::updateEntities(float fDt)
+    void System::updateEntities(double fDt)
     {
         for (auto entity : m_sysEntities)
         {

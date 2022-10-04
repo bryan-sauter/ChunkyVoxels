@@ -55,7 +55,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         if (elapsedTime > 1.0f)
         {
             _itoa_s(myTimer.GetFPS(), buffer, _countof(buffer), 10);
-            printf("FPS: %s - fDt: %f - Frames: %d\n", buffer, gameTime, i);
+            printf("FPS: %s - fDt: %f - Frames: %d\n", buffer, (float)gameTime, i);
             elapsedTime = 0.0f;
             i = 0;
         }

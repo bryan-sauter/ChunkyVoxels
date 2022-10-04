@@ -16,7 +16,7 @@ private:
     //might be temporary
     btAlignedObjectArray<btCollisionShape*> m_aCollisionShapes;
 
-    void updateEntity(float fDt, ECS::Entity_ID pEntity);
+    void updateEntity(double fDt, ECS::Entity_ID pEntity);
 
     //helpers
     btBoxShape* createBoxShape(const btVector3& halfExtents);
@@ -25,7 +25,7 @@ private:
 public:
     PhysicsWorld(ECS::World* world);
     ~PhysicsWorld(void) {}
-    void tick(float fDt);
+    void tick(double fDt);
     void shutdown(void);
 
     btBoxShape* colShape;

@@ -68,12 +68,12 @@ namespace ECS
             return (m_sysEntities.end() != m_sysEntities.find(entity));
         }
         // called every frame to update the entities manipulated by this system
-        void updateEntities(float fDt);
+        void updateEntities(double fDt);
         // actual implementation for how each entity should be manipulated
         // TODO - subclass needs entity since we aren't using pairs of tuples
         // should this be explicit to what exactly the subclass will manipulate?
         // subclass will have access to the World to pull all components of an entity
-        virtual void updateEntity(float fDt, ECS::Entity_ID pEntity) = 0;
+        virtual void updateEntity(double fDt, ECS::Entity_ID pEntity) = 0;
     };
 }
 

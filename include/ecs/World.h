@@ -101,7 +101,7 @@ namespace ECS
         /*
          * loop through all the systems and update their entities
          */
-        void updateEntities(float fDt);
+        void updateEntities(double fDt);
         /*
          * get the next valid ID
          */

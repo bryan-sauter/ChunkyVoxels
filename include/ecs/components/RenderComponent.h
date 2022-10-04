@@ -34,11 +34,10 @@ namespace ECS
         {
             this->m_textureID = textureID;
         }
-        inline glm::vec3 getTransformPosition(void)
+        inline XMMATRIX getTransformMatrix(void)
         {
-            return m_pTransform ? m_pTransform->getPosition() : glm::vec3(0.0f);
+            return m_pTransform ? m_pTransform->getTransformMatrix() : XMMatrixIdentity();
         }
-
 
 
         static const eComponentType m_componentType = eComponentType::ECS_COMP_RENDERABLE;

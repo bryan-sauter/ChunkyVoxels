@@ -47,19 +47,21 @@ PhysicsWorld::PhysicsWorld(ECS::World* world) : ECS::System(world)
     addRegisteredComponents(ECS::eComponentType::ECS_COMP_SIMPLECOLLIDER);
 }
 
-void PhysicsWorld::tick(float fDt)
+void PhysicsWorld::tick(double fDt)
 {
     if (m_pDynamicsWorld)
     {
-        m_pDynamicsWorld->stepSimulation(fDt);
+        m_pDynamicsWorld->stepSimulation((float)fDt);
     }
 }
 
-void PhysicsWorld::updateEntity(float fDt, ECS::Entity_ID pEntity)
+void PhysicsWorld::updateEntity(double fDt, ECS::Entity_ID pEntity)
 {
     ECS::SimpleColliderComponent* cComp = ECS::System::m_world->getComponentStorage<ECS::SimpleColliderComponent>()->get(pEntity);
-    btVector3 pos = cComp->getBody()->getWorldTransform().getOrigin();
-    ECS::System::m_world->getComponentStorage<ECS::TransformComponent>()->get(pEntity)->setPosition(pos);
+    btTransform transform = cComp->getBody()->getWorldTransform();
+    ECS::TransformComponent* comp =
+        ECS::System::m_world->getComponentStorage<ECS::TransformComponent>()->get(pEntity);
+    comp->setPhysicsTransform(transform.getOrigin(), transform.getRotation());
 }
 
 void PhysicsWorld::shutdown(void)

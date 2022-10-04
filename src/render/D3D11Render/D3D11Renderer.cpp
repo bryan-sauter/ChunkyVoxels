@@ -82,7 +82,7 @@ bool D3D11Renderer::initialize(void)
 
 
     this->m_pCamera->buildPerspective(glm::pi<float>()/4.0f, 0.1f, 5000.0f);
-    this->m_pCamera->setViewPosition(10.0f, 0.0f, -50.0f);
+    this->m_pCamera->setViewPosition(5.0f, 0.0f, -30.0f);
 
     m_textureManager.initialize(m_pDevice, m_pDeviceContext);
 
@@ -192,11 +192,11 @@ void D3D11Renderer::initializeDepthAndStencilBuffer(void)
     m_pDeviceContext->OMSetRenderTargets(1, &m_pRenderTarget, m_pDepthBuffer);
 }
 
-void D3D11Renderer::updateEntity(float fDt, ECS::Entity_ID pEntity)
+void D3D11Renderer::updateEntity(double fDt, ECS::Entity_ID pEntity)
 {
 }
 
-void D3D11Renderer::update(float dT)
+void D3D11Renderer::update(double dT)
 {
     m_pShader->updateShader(m_pDeviceContext, XMMatrixTranspose(m_pCamera->getViewMatrix() * m_pCamera->getProjectionMatrix()));
 }
@@ -216,7 +216,6 @@ void D3D11Renderer::render(void)
     // select which primtive type we are using
     m_pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     XMMATRIX matVP = m_pCamera->getViewMatrix() * m_pCamera->getProjectionMatrix();
-    glm::vec3 vPosition;
     vector<ECS::RenderComponent*> compStorage = 
         ECS::System::m_world->getComponentStorage<ECS::RenderComponent>()->getStoredComponents();
     for (auto entity : compStorage)
@@ -228,9 +227,7 @@ void D3D11Renderer::render(void)
             m_currTextID = entity->getTextureID();
         }
         // draw the vertex buffer to the back 
-        vPosition = entity->getTransformPosition();
-        XMMATRIX translation = XMMatrixTranslation(vPosition.x, vPosition.y, vPosition.z);
-        m_pShader->updateShader(m_pDeviceContext, XMMatrixTranspose(translation * matVP));
+        m_pShader->updateShader(m_pDeviceContext, XMMatrixTranspose( entity->getTransformMatrix() * matVP));
         m_pDeviceContext->DrawIndexed(36, 0, 0);
     }
 

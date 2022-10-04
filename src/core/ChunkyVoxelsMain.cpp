@@ -49,7 +49,7 @@ void ChunkyVoxelsMain::initialize(HWND hWnd, HINSTANCE hInstance)
                 btTransform startTransform;
                 startTransform.setIdentity();
 
-                btScalar mass(3.f);
+                btScalar mass(1.5f);
 
                 //rigidbody is dynamic if and only if mass is non zero, otherwise static
                 bool isDynamic = (mass != 0.f);
@@ -85,27 +85,27 @@ void ChunkyVoxelsMain::tick(double fDt)
 {
     if (GetAsyncKeyState('A'))
     {
-        m_pRenderer->getCamera()->viewRotateLocalY(-XMConvertToRadians(7.0f) * fDt * 5.0f);
+        m_pRenderer->getCamera()->viewRotateLocalY(-XMConvertToRadians(7.0f) * (float)fDt * 5.0f);
     }
     if (GetAsyncKeyState('D'))
     {
-        m_pRenderer->getCamera()->viewRotateLocalY(XMConvertToRadians(7.0f) * fDt * 5.0f);
+        m_pRenderer->getCamera()->viewRotateLocalY(XMConvertToRadians(7.0f) * (float)fDt * 5.0f);
     }
     if (GetAsyncKeyState('W'))
     {
-        m_pRenderer->getCamera()->viewTranslateLocalZ(FORWARD_SPEED * fDt * 5.0f);
+        m_pRenderer->getCamera()->viewTranslateLocalZ(FORWARD_SPEED * (float)fDt * 5.0f);
     }
     if (GetAsyncKeyState('S'))
     {
-        m_pRenderer->getCamera()->viewTranslateLocalZ(FORWARD_SPEED * -fDt * 5.0f);
+        m_pRenderer->getCamera()->viewTranslateLocalZ(FORWARD_SPEED * -(float)fDt * 5.0f);
     }
     if (GetAsyncKeyState('R'))
     {
-        m_pRenderer->getCamera()->viewTranslateLocalY(FORWARD_SPEED * fDt * 5.0f);
+        m_pRenderer->getCamera()->viewTranslateLocalY(FORWARD_SPEED * (float)fDt * 5.0f);
     }
     if (GetAsyncKeyState('F'))
     {
-        m_pRenderer->getCamera()->viewTranslateLocalY(FORWARD_SPEED * -fDt * 5.0f);
+        m_pRenderer->getCamera()->viewTranslateLocalY(FORWARD_SPEED * -(float)fDt * 5.0f);
     }
     if (GetAsyncKeyState(VK_ESCAPE))
         PostQuitMessage(0);
