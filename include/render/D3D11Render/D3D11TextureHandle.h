@@ -9,13 +9,14 @@ static const Texture_ID maxTextureID        = SIZE_MAX;
 
 struct D3D11TextureHandle
 {
-    const wchar_t* m_cFilePath;
-    Texture_ID          m_uiTextureID;
-    unsigned int        m_uiRefCount;
-    unsigned int        m_uiWidth;
-    unsigned int        m_uiHeight;
-    ID3D11Resource* m_pTexture;
-    ID3D11SamplerState* m_pSampleState;
+    const wchar_t*              m_cFilePath;
+    Texture_ID                  m_uiTextureID;
+    unsigned int                m_uiRefCount;
+    unsigned int                m_uiWidth;
+    unsigned int                m_uiHeight;
+    ID3D11Resource*             m_pTexture;
+    ID3D11ShaderResourceView*   m_pSRV;
+    ID3D11SamplerState*         m_pSampleState;
 
     D3D11TextureHandle() :
         m_cFilePath(nullptr),
@@ -24,6 +25,7 @@ struct D3D11TextureHandle
         m_uiWidth(0u),
         m_uiHeight(0u),
         m_pTexture(nullptr),
+        m_pSRV(nullptr),
         m_pSampleState(nullptr)
     {
         //default constructor
@@ -37,6 +39,7 @@ struct D3D11TextureHandle
         m_uiWidth       = 0u;
         m_uiHeight      = 0u;
         m_pTexture      = nullptr;
+        m_pSRV          = nullptr;
         m_pSampleState  = nullptr;
     }
 };

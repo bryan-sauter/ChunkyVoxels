@@ -4,7 +4,7 @@
 #include "helpers/Globals.h"
 #include "core/ChunkyVoxelsMain.h"
 #include "ecs/World.h"
-#include "ecs/components/TransformComponent.h"
+#include "ecs/components/RenderComponent.h"
 #include "render/D3D11Render/D3D11Declares.h"
 
 #include "render/D3D11Render/BasicColorShader.h"
@@ -24,6 +24,7 @@ D3D11Renderer::D3D11Renderer(ECS::World* world) : ECS::System(world)
     m_pShader = nullptr;
 
     addRegisteredComponents(ECS::eComponentType::ECS_COMP_TRANSFORM);
+    addRegisteredComponents(ECS::eComponentType::ECS_COMP_RENDERABLE);
 }
 
 bool D3D11Renderer::initialize(void)
@@ -81,13 +82,14 @@ bool D3D11Renderer::initialize(void)
 
 
     this->m_pCamera->buildPerspective(glm::pi<float>()/4.0f, 0.1f, 5000.0f);
-    this->m_pCamera->setViewPosition(10.0f, 0.0f, -50.0f);
+    this->m_pCamera->setViewPosition(5.0f, 0.0f, -30.0f);
+
+    m_textureManager.initialize(m_pDevice, m_pDeviceContext);
 
     m_pShader = new BasicTextureShader();
     m_pShader->initialize(m_pDevice, m_pDeviceContext,
                                     L"./resource/render/D3D11Renderer/textured.fx",
                                     L"./resource/render/D3D11Renderer/textured.fx");
-    m_pShader->loadTexture(m_pDevice, m_pDeviceContext, L"./resource/render/Texture/sample.dds");
     initializePipeline();
     initializeDepthAndStencilBuffer();
  
@@ -190,11 +192,11 @@ void D3D11Renderer::initializeDepthAndStencilBuffer(void)
     m_pDeviceContext->OMSetRenderTargets(1, &m_pRenderTarget, m_pDepthBuffer);
 }
 
-void D3D11Renderer::updateEntity(float fDt, ECS::Entity_ID pEntity)
+void D3D11Renderer::updateEntity(double fDt, ECS::Entity_ID pEntity)
 {
 }
 
-void D3D11Renderer::update(float dT)
+void D3D11Renderer::update(double dT)
 {
     m_pShader->updateShader(m_pDeviceContext, XMMatrixTranspose(m_pCamera->getViewMatrix() * m_pCamera->getProjectionMatrix()));
 }
@@ -214,15 +216,18 @@ void D3D11Renderer::render(void)
     // select which primtive type we are using
     m_pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     XMMATRIX matVP = m_pCamera->getViewMatrix() * m_pCamera->getProjectionMatrix();
-    glm::vec3 vPosition;
-    vector<ECS::TransformComponent*> compStorage = 
-        ECS::System::m_world->getComponentStorage<ECS::TransformComponent>()->getStoredComponents();
+    vector<ECS::RenderComponent*> compStorage = 
+        ECS::System::m_world->getComponentStorage<ECS::RenderComponent>()->getStoredComponents();
     for (auto entity : compStorage)
     {
+        if (entity->getTextureID() != m_currTextID)
+        {
+            m_pShader->setShaderTexture(m_pDeviceContext, 
+                m_textureManager.getSRV(entity->getTextureID()), m_textureManager.getSamplerState(entity->getTextureID()));
+            m_currTextID = entity->getTextureID();
+        }
         // draw the vertex buffer to the back 
-        vPosition = entity->getPosition();
-        XMMATRIX translation = XMMatrixTranslation(vPosition.x, vPosition.y, vPosition.z);
-        m_pShader->updateShader(m_pDeviceContext, XMMatrixTranspose(translation * matVP));
+        m_pShader->updateShader(m_pDeviceContext, XMMatrixTranspose( entity->getTransformMatrix() * matVP));
         m_pDeviceContext->DrawIndexed(36, 0, 0);
     }
 

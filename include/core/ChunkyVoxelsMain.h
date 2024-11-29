@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "render/Renderer.h"
+#include "physics/PhysicsWorld.h"
 
 //temp
 #include <vector>
@@ -18,6 +19,8 @@ private:
     HWND m_hWnd;
     HINSTANCE m_hInstance;
     Renderer* m_pRenderer;
+    PhysicsWorld* m_pPhysicsContainer;
+    ECS::System* m_pPhysicsWorld;
     ECS::System* m_pRenderSystem;
     ECS::World* m_pWorld;
 
@@ -33,7 +36,7 @@ public:
     void operator=(ChunkyVoxelsMain const&) = delete;
 
     void initialize(HWND hWnd, HINSTANCE hInstance);
-    void tick(float fDt);
+    void tick(double fDt);
     void shutdown(void);
 
 

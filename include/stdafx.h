@@ -44,7 +44,7 @@ typedef struct D3DXCOLOR {
 //however we might want to override that for a release issue
 #define CV_DEBUG (_DEBUG || 1)
 
-#if CV_DEBUG
+#if CV_DEBUG && 0
     #define _CRTDBG_MAP_ALLOC
     #include <stdlib.h>
     #include <crtdbg.h>

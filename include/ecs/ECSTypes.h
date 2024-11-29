@@ -14,7 +14,7 @@ namespace ECS
         ECS_COMP_INVALID = 0,
         ECS_COMP_TRANSFORM,
         ECS_COMP_RENDERABLE,
-        ECS_COMP_COLLIDABLE,
+        ECS_COMP_SIMPLECOLLIDER,
 
     };    typedef set<eComponentType> ComponentTypeSet;
 

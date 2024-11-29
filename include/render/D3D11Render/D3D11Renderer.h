@@ -7,6 +7,7 @@
 #include "render/D3D11Render/BaseShader.h"
 
 #include "render/D3D11Render/BasicTextureShader.h"
+#include "render/D3D11Render/D3D11TextureManager.h"
 
 #include "ecs/World.h"
 #include "ecs/System.h"
@@ -29,16 +30,22 @@ private:
 
     BasicTextureShader* m_pShader;
 
+    //managers/handlers that will need to be abstracted outside of the renderer in use
+    D3D11TextureManager m_textureManager;
+
     const float m_clearColor[4] = { 0.0f, 0.2f, 0.4f, 1.0f };
 
     void initializePipeline(void);
     void initializeDepthAndStencilBuffer(void);
-    void updateEntity(float fDt, ECS::Entity_ID pEntity);
+    void updateEntity(double fDt, ECS::Entity_ID pEntity);
+
+    //state variables
+    Texture_ID m_currTextID = maxTextureID;
 public:
     D3D11Renderer(ECS::World* world);
     ~D3D11Renderer(void) {}
     bool initialize(void);
-    void update(float dT);
+    void update(double dT);
     void render(void);
     bool shutdown(void);
     inline D3D11Camera* getCamera(void) { return m_pCamera; }

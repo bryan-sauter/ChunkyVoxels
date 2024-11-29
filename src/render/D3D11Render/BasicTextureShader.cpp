@@ -39,6 +39,12 @@ void BasicTextureShader::updateShader(ID3D11DeviceContext* pDeviceContext, glm::
     pDeviceContext->Unmap(m_pCBuffer, 0);
 }
 
+void BasicTextureShader::setShaderTexture(ID3D11DeviceContext* pDeviceContext, ID3D11ShaderResourceView* pResourceView, ID3D11SamplerState* pSampleState)
+{
+    pDeviceContext->PSSetShaderResources(0, 1, &pResourceView);
+    pDeviceContext->PSSetSamplers(0, 1, &pSampleState);
+}
+
 BasicTextureShader::BasicTextureShader(void) : m_pCBuffer(nullptr), m_sConstantBuffer(DirectX::XMMatrixIdentity()), BaseShader()
 {
     ZeroMemory(&m_sMappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
@@ -65,26 +71,4 @@ void BasicTextureShader::initialize(ID3D11Device* pDevice, ID3D11DeviceContext* 
     pDeviceContext->IASetInputLayout(m_pLayout);
 
     initShader(pDevice, pDeviceContext);
-}
-
-void BasicTextureShader::loadTexture(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, const wchar_t* texFilePath)
-{
-    ThrowIfFailed(DirectX::CreateDDSTextureFromFile(pDevice, texFilePath, &m_pTexture, &m_pResourceView));
-    //D3D11_TEXTURE2D_DESC desc;
-    //((ID3D11Texture2D*)m_pTexture)->GetDesc(&desc);
-
-    D3D11_SAMPLER_DESC sampDesc;
-    ZeroMemory(&sampDesc, sizeof(sampDesc));
-    sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-    sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-    sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-    sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-    sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
-    sampDesc.MinLOD = 0;
-    sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
-
-    ThrowIfFailed(pDevice->CreateSamplerState(&sampDesc, &m_pSampleState));
-
-    pDeviceContext->PSSetShaderResources(0, 1, &m_pResourceView);
-    pDeviceContext->PSSetSamplers(0, 1, &m_pSampleState);
 }

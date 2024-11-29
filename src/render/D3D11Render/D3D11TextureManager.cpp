@@ -9,13 +9,12 @@ D3D11TextureManager::D3D11TextureManager(void) :
 {
 }
 
-void D3D11TextureManager::initialize(ID3D11Device* pDevice, ID3D11ShaderResourceView** m_pResourceView)
+void D3D11TextureManager::initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext)
 {
-    loadTexture(pDevice, m_pResourceView, L"./resource/render/Texture/sample.dds"); //need to load the default texture which would move the next handle
-    m_umTextureMap.clear();
+    loadTexture(pDevice, pDeviceContext, L"./resource/render/Texture/sample.dds"); //need to load the default texture which would move the next handle
 }
 
-Texture_ID D3D11TextureManager::loadTexture(ID3D11Device* pDevice, ID3D11ShaderResourceView** m_pResourceView, const wchar_t* textureFilePath)
+Texture_ID D3D11TextureManager::loadTexture(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, const wchar_t* textureFilePath)
 {
     if (!textureFilePath)
     {
@@ -33,7 +32,8 @@ Texture_ID D3D11TextureManager::loadTexture(ID3D11Device* pDevice, ID3D11ShaderR
     m_umTextureMap[currentHandle] = D3D11TextureHandle(m_nextHandle, textureFilePath);
     try
     {
-        ThrowIfFailed(DirectX::CreateDDSTextureFromFile(pDevice, textureFilePath, &(m_umTextureMap[currentHandle].m_pTexture), m_pResourceView));
+        ThrowIfFailed(DirectX::CreateDDSTextureFromFile(pDevice, textureFilePath, 
+            &(m_umTextureMap[currentHandle].m_pTexture), &(m_umTextureMap[currentHandle].m_pSRV) ));
 
         if (m_umTextureMap[currentHandle].m_pTexture)
         {
@@ -72,12 +72,17 @@ void D3D11TextureManager::shutdown(void)
 
 ID3D11Resource* D3D11TextureManager::getTexture(Texture_ID textureID)
 {
-    return nullptr;
+    return textureID < m_nextHandle ? m_umTextureMap[textureID].m_pTexture : m_umTextureMap[defaultTextureID].m_pTexture;
+}
+
+ID3D11ShaderResourceView* D3D11TextureManager::getSRV(Texture_ID textureID)
+{
+    return textureID < m_nextHandle ? m_umTextureMap[textureID].m_pSRV : m_umTextureMap[defaultTextureID].m_pSRV;;
 }
 
 ID3D11SamplerState* D3D11TextureManager::getSamplerState(Texture_ID textureID)
 {
-    return nullptr;
+    return textureID < m_nextHandle ? m_umTextureMap[textureID].m_pSampleState : m_umTextureMap[defaultTextureID].m_pSampleState;;
 }
 
 Texture_ID D3D11TextureManager::getTexture(const wchar_t* textureFilePath)

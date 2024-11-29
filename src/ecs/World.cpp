@@ -66,7 +66,7 @@ namespace ECS
         }
         return nUnregisteredSystems;
     }
-    void World::updateEntities(float fDt)
+    void World::updateEntities(double fDt)
     {
         //loop through the current systems and let them update their entities
         for (auto system : m_vSystems)
